@@ -1,0 +1,56 @@
+.btn {
+  font-size: 1.2rem;
+  text-decoration: none;
+  padding: 0.6rem;
+  transition: all 0.3s ease-in-out;
+  background-color: white;
+  border: none;
+  outline: none;
+}
+
+.btn--ouline {
+  position: relative;
+  border: 1px solid #c85621;
+  border-radius: 0.5rem;
+  text-align: center;
+  color: #c85621;
+  font-weight: 600;
+  z-index: 1;
+}
+
+.btn--ouline::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -2;
+  border-radius: 0.4rem;
+  background-color: #c85621;
+
+  transform: scaleX(0);
+  transform-origin: left;
+
+  transition: transform 0.3s ease-in-out;
+}
+
+.btn--ouline:hover::before {
+  transform: scaleX(1);
+}
+
+.btn--ouline:hover {
+  color: white;
+}
+
+.btn--fill {
+  color: white;
+  background-color: #c85621;
+  border-radius: .2rem;
+  margin-right: 1rem;
+}
+
+.btn--disabled {
+  background-color: #ccc;
+  color: black;
+}

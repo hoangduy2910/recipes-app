@@ -1,0 +1,60 @@
+.nav-icon {
+  font-size: 2rem;
+  padding: .2rem;
+  font-style: italic;
+  background-color: #c85621;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.nav-icon a {
+  text-decoration: none;
+  color:  #c85621;
+}
+
+.nav-icon:hover {
+  cursor: pointer;
+}
+
+.nav-btn {
+  display: none;
+  color: #c85621;
+}
+
+.nav-menu {
+  transition: left .3s ease-in-out;
+}
+
+@media (max-width: 768px) {
+  .nav {
+    position: relative;
+  }
+
+  .nav-btn {
+    display: block;
+    z-index: 10;
+  }
+
+  .nav-menu {
+    background-color: #f9ece6;
+    width: 100%;
+    height: 100vh;
+  }
+
+  .hide {
+    background-color: none;
+    position: absolute;
+    left: -100rem;
+    top: 0rem;
+    display: block;
+  }
+
+  .show {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: block;
+    z-index: 10;
+  }
+}

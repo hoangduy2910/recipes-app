@@ -1,0 +1,7 @@
+.main-header {
+  background-color: #f9ece6;
+  padding: .8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

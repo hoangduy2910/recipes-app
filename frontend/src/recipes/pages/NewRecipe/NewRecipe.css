@@ -1,0 +1,24 @@
+.new-recipe-form {
+  margin: 2rem auto;
+  padding: 2rem;
+  border: .1rem solid #c85621;
+  border-radius: .5rem;
+}
+
+.new-recipe-form__title {
+  display: flex;
+  justify-content: space-between;
+  align-self: center;
+}
+
+.new-recipe-form__title  span {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #c85621;
+  font-weight: 700;
+  text-decoration-line: underline;
+}
+
+.new-recipe-form__title i {
+  color: #c85621;
+}
