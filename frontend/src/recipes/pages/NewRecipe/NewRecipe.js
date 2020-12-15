@@ -116,7 +116,7 @@ const NewRecipe = (props) => {
             />
             <Button
               fill
-              fullWitdh
+              fullWidth
               type="submit"
               onClick={(event) => submitFormHandler(event)}
             >

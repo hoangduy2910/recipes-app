@@ -15,7 +15,7 @@ const Button = (props) => {
     classes.push("btn--disabled");
   }
 
-  if (props.fullWitdh) {
+  if (props.fullWidth) {
     classes.push("btn--full-width");
   }
 

@@ -1,0 +1,25 @@
+.form-register {
+  width: 75%;
+  margin: 0 auto;
+  margin-top: 5rem;
+  border-radius: 0.5rem;
+  border: 1px solid #c85621;
+  padding: 3rem;
+}
+
+.form-register__header {
+  font-size: 2.5rem;
+  color: #c85621;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.form-register__footer {
+  color: #c85621;
+}
+
+.form-register__footer a {
+  color: #c85621;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
