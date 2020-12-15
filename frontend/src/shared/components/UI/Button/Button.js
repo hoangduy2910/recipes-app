@@ -4,14 +4,19 @@ import "./Button.css";
 
 const Button = (props) => {
   let classes = [];
-  if (props.disabled) {
-    classes.push("btn--disabled");
-  }
   
   if (props.ouline) {
     classes.push("btn--ouline");
   } else if (props.fill) {
     classes.push("btn--fill");
+  }
+
+  if (props.disabled) {
+    classes.push("btn--disabled");
+  }
+
+  if (props.fullWitdh) {
+    classes.push("btn--full-width");
   }
 
   return (

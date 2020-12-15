@@ -54,3 +54,8 @@
   background-color: #ccc;
   color: black;
 }
+
+.btn--full-width {
+  width: 100%;
+  margin-bottom: 2rem;
+}

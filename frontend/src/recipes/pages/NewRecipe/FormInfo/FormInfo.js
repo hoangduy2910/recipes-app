@@ -2,42 +2,41 @@ import React from "react";
 
 import Input from "../../../../shared/components/FormElement/Input/Input";
 import { VALIDATOR_REQUIRE } from "../../../../shared/utils/validators";
-import { useForm } from "../../../../shared/hooks/form-hook";
 
 const FormInfo = React.memo((props) => {
-  const [formState, inputChangeHandler] = useForm({
-    title: {
-      value: "",
-      isValid: false,
-    },
-    description: {
-      value: "",
-      isValid: false,
-    },
+  const info = Object.keys(props.data).map((itemId, idx) => {
+    let element = "";
+    let label = "";
+
+    if (itemId === "title") {
+      element = "input";
+      label = "Title";
+    } else {
+      element = "textarea";
+      label = "Description";
+    }
+
+    return (
+      <Input
+        key={idx}
+        id={itemId}
+        element={element}
+        label={label}
+        validators={[VALIDATOR_REQUIRE()]}
+        initialValue={props.data[itemId].value}
+        errorText={`Please enter a valid ${itemId}.`}
+        typeForm="info"
+        onInput={props.inputChange}
+      />
+    );
   });
 
   const formInfo = (
     <React.Fragment>
       <div className="new-recipe-form__title">
-        <span>Infomation</span>
+        <span>Info</span>
       </div>
-      <Input
-        id="title"
-        element="input"
-        type="text"
-        label="Title"
-        validators={[VALIDATOR_REQUIRE()]}
-        errorText="Please enter a valid title."
-        onInput={inputChangeHandler}
-      />
-      <Input
-        id="description"
-        element="textarea"
-        label="Description"
-        validators={[VALIDATOR_REQUIRE()]}
-        errorText="Please enter a valid description."
-        onInput={inputChangeHandler}
-      />
+      {info}
     </React.Fragment>
   );
 
