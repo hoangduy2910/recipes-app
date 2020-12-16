@@ -3,6 +3,8 @@ import { useCallback, useReducer } from "react";
 const formReducer = (state, action) => {
   switch (action.type) {
     case "INPUT_CHANGE":
+      console.log("INPUT_CHANGE", state.inputs.ingredients, action);
+      
       let formIsValid = true;
       for (const inputId in state.inputs[action.typeForm]) {
         if (inputId === action.inputId) {
@@ -12,6 +14,7 @@ const formReducer = (state, action) => {
             formIsValid && state.inputs[action.typeForm][inputId].isValid;
         }
       }
+
       return {
         ...state,
         inputs: {
@@ -41,24 +44,15 @@ const formReducer = (state, action) => {
         },
       };
     case "INPUT_REMOVE":
-      const inputs = { ...state.inputs[action.typeForm] };
-      var filtered = Object.keys(inputs).reduce((filtered, key) => {
-        if (key !== action.inputId) {
-          filtered[key] = inputs[key];
-        }
-        return filtered;
-      }, {});
-
-      console.log("filtered", filtered);
+      console.log("INPUT_REMOVE");
+      const inputsElement = { ...state.inputs[action.typeForm] };
+      delete inputsElement[action.inputId];
 
       return {
         ...state,
         inputs: {
           ...state.inputs,
-          [action.typeForm]: {
-            ...state.inputs[action.typeForm],
-            // ...filtered,
-          },
+          [action.typeForm]: inputsElement,
         },
       };
     default:

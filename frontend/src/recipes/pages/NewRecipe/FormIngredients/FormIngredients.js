@@ -20,24 +20,24 @@ const FormIngredients = (props) => {
           onInput={props.inputChange}
         />
       );
+    } else {
+      return (
+        <Input
+          key={idx}
+          id={itemId}
+          label={`Ingredient ${idx + 1}`}
+          element="input"
+          type="text"
+          errorText="Please enter a valid ingredient."
+          validators={[VALIDATOR_REQUIRE()]}
+          initialValue={props.data[itemId].value}
+          typeForm="ingredients"
+          onInput={props.inputChange}
+          removeInput
+          removeElement={() => props.removeIngredient(itemId, "ingredients")}
+        />
+      );
     }
-
-    return (
-      <Input
-        key={idx}
-        id={itemId}
-        label={`Ingredient ${idx + 1}`}
-        element="input"
-        type="text"
-        errorText="Please enter a valid ingredient."
-        validators={[VALIDATOR_REQUIRE()]}
-        initialValue={props.data[itemId].value}
-        typeForm="ingredients"
-        onInput={props.inputChange}
-        removeInput
-        removeElement={() => props.removeIngredient(itemId, "ingredients")}
-      />
-    );
   });
 
   const formIngredients = (

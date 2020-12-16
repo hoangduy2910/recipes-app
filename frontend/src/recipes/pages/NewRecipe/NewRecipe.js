@@ -8,7 +8,7 @@ import { useForm } from "../../../shared/hooks/form-hook";
 import "./NewRecipe.css";
 
 const NewRecipe = (props) => {
-  const [formCount, setFormCount] = useState(1);
+  const [formCount, setFormCount] = useState(2);
   const [
     formState,
     inputChangeHandler,
@@ -49,11 +49,21 @@ const NewRecipe = (props) => {
       let newInput;
 
       if (typeForm === "ingredients") {
-        newInput = Object.keys(formState.inputs.ingredients).length + 1;
-        inputAddHandler(`ingredient${newInput}`, "ingredients");
+        newInput =
+          parseInt(
+            Object.keys(formState.inputs.ingredients)
+              .slice(-1)[0]
+              .split("ingredient")[1]
+          ) + 1;
+        inputAddHandler(`ingredient${newInput.toString()}`, "ingredients");
       } else {
-        newInput = Object.keys(formState.inputs.steps).length + 1;
-        inputAddHandler(`step${newInput}`, "steps");
+        newInput =
+          parseInt(
+            Object.keys(formState.inputs.steps)
+              .slice(-1)[0]
+              .split("ingredient")[1]
+          ) + 1;
+        inputAddHandler(`step${newInput.toString()}`, "steps");
       }
     },
     [formState.inputs.ingredients, formState.inputs.steps, inputAddHandler]
@@ -68,10 +78,9 @@ const NewRecipe = (props) => {
 
   const submitFormHandler = (event) => {
     event.preventDefault();
-    console.log(formState);
   };
 
-  console.log(`FormCount: ${formCount > 3}, FormState: ${formState.isValid}`);
+  console.log(formState.inputs.ingredients);
 
   return (
     <React.Fragment>

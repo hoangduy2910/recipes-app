@@ -41,7 +41,7 @@ const Register = (props) => {
       error = "email";
       type = "email";
       validator = VALIDATOR_EMAIL();
-    } else {
+    } else { 
       label = "Password";
       error = "password (6 character)";
       type = "password";
