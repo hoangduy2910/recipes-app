@@ -3,8 +3,6 @@ import { useCallback, useReducer } from "react";
 const formReducer = (state, action) => {
   switch (action.type) {
     case "INPUT_CHANGE":
-      console.log("INPUT_CHANGE", state.inputs.ingredients, action);
-      
       let formIsValid = true;
       for (const inputId in state.inputs[action.typeForm]) {
         if (inputId === action.inputId) {
@@ -44,7 +42,6 @@ const formReducer = (state, action) => {
         },
       };
     case "INPUT_REMOVE":
-      console.log("INPUT_REMOVE");
       const inputsElement = { ...state.inputs[action.typeForm] };
       delete inputsElement[action.inputId];
 

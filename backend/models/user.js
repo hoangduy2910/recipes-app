@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const uniqueValidator = require("mongoose-unique-validator");
 
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true },
@@ -7,5 +8,7 @@ const userSchema = new mongoose.Schema({
   image: { type: String, required: true },
   recipes: [{ type: mongoose.Types.ObjectId, required: true, ref: "Recipe" }],
 });
+
+userSchema.plugin(uniqueValidator);
 
 module.exports = mongoose.model("User", userSchema);

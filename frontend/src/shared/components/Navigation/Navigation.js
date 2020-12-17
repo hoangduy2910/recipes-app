@@ -9,7 +9,7 @@ const Navigation = (props) => {
   const [isShowNav, setIsShowNav] = useState(false);
 
   const showNavMenu = () => {
-    setIsShowNav(!isShowNav);
+    setIsShowNav((prevIsShowNav) => !prevIsShowNav);
   };
 
   return (

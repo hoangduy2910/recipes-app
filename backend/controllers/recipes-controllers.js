@@ -15,13 +15,21 @@ const getAllRecipes = async (req, res, next) => {
   });
 };
 
-const getRecipesByUserId = (req, res, next) => {};
+const getRecipesByUserId = (req, res, next) => {
+  return res.status(200).json({ message: "getRecipesByUserId" });
+};
 
-const createRecipe = (req, res, next) => {};
+const createRecipe = (req, res, next) => {
+  return res.status(200).json({ message: "createRecipe" });
+};
 
-const updateRecipe = (req, res, next) => {};
+const updateRecipe = (req, res, next) => {
+  return res.status(200).json({ message: "updateRecipe" });
+};
 
-const deleteRecipe = (req, res, next) => {};
+const deleteRecipe = (req, res, next) => {
+  return res.status(200).json({ message: "deleteRecipe" });
+};
 
 exports.getAllRecipes = getAllRecipes;
 exports.getRecipesByUserId = getRecipesByUserId;
