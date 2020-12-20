@@ -1,4 +1,4 @@
-.nav-icon {
+.nav__icon {
   font-size: 2rem;
   padding: .2rem;
   font-style: italic;
@@ -8,21 +8,25 @@
   color: transparent;
 }
 
-.nav-icon a {
+.nav__icon a {
   text-decoration: none;
   color:  #c85621;
 }
 
-.nav-icon:hover {
+.nav__icon:hover {
   cursor: pointer;
 }
 
-.nav-btn {
+.nav__btn {
   display: none;
   color: #c85621;
 }
 
-.nav-menu {
+.nav__btn:hover {
+  cursor: pointer;
+}
+
+.nav__menu {
   transition: left .3s ease-in-out;
 }
 
@@ -31,15 +35,15 @@
     position: relative;
   }
 
-  .nav-btn {
+  .nav__btn {
     display: block;
-    z-index: 10;
   }
 
-  .nav-menu {
+  .nav__menu {
     background-color: #f9ece6;
-    width: 100%;
+    width: 70%;
     height: 100vh;
+    z-index: 15;
   }
 
   .hide {
@@ -55,6 +59,6 @@
     left: 0;
     top: 0;
     display: block;
-    z-index: 10;
+    z-index: 15;
   }
 }

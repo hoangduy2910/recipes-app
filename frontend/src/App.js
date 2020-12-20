@@ -17,7 +17,7 @@ const App = (props) => {
     setUserId(userId);
   };
 
-  const logout = (userId) => {
+  const logout = () => {
     setUserId(null);
   };
 
@@ -47,7 +47,7 @@ const App = (props) => {
         </Route>
         <Route path="/register">
           <Register />
-        </Route>
+        </Route> 
       </Switch>
     );
   }

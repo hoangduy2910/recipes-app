@@ -34,7 +34,7 @@ const login = async (req, res, next) => {
 
   let isValidPassword;
   try {
-    isValidPassword = bcrypt.compare(existedUser.password, password);
+    isValidPassword = await bcrypt.compare(password, existedUser.password);
   } catch (error) {
     return next(new HttpError("Login failed. Something went wrong.", 500));
   }
@@ -53,7 +53,6 @@ const register = async (req, res, next) => {
   try {
     existedUser = await User.findOne({ email: email });
   } catch (error) {
-    console.log("existedUser");
     return next(new HttpError("Register failed. Something went wrong.", 500));
   }
 
@@ -65,7 +64,6 @@ const register = async (req, res, next) => {
   try {
     hashedPassword = await bcrypt.hash(password, 12);
   } catch (error) {
-    console.log("hashedPassword");
     return next(new HttpError("Register failed. Something went wrong.", 500));
   }
 
@@ -79,7 +77,6 @@ const register = async (req, res, next) => {
   try {
     await newUser.save();
   } catch (error) {
-    console.log("newUser");
     return next(new HttpError("Register failed. Something went wrong.", 500));
   }
 

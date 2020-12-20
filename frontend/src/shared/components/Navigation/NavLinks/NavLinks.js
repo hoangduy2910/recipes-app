@@ -9,30 +9,35 @@ const NavLinks = (props) => {
   const auth = useContext(AuthContext);
 
   return (
-    <ul className="nav-links">
+    <ul className="nav-links" onClick={props.onClick}>
+      <li className="nav-links__item">
+          <NavLink to={`/`}>
+            Recipes
+          </NavLink>
+        </li>
       {auth.userId && (
         <li className="nav-links__item">
-          <NavLink to="/:id/recipes" exact>
+          <NavLink to={`/${auth.userId}/recipes`}>
             My Recipes
           </NavLink>
         </li>
       )}
       {auth.userId && (
         <li className="nav-links__item">
-          <NavLink to="/recipe/new" exact>
+          <NavLink to="/recipe/new">
             Add Recipe
           </NavLink>
         </li>
       )}
       {!auth.isLogin && (
-        <li className="nav-links__item">
-          <NavLink to="/login" exact>
+        <li className="nav-links__item--fill">
+          <Button fill href="/login">
             Login
-          </NavLink>
+          </Button>
         </li>
       )}
       {auth.isLogin && (
-        <li className="nav-links__item">
+        <li className="nav-links__item--fill">
           <Button fill onClick={auth.logout}>
             Logout
           </Button>

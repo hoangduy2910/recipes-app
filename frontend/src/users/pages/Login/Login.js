@@ -1,9 +1,10 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import Input from "../../../shared/components/FormElement/Input/Input";
 import Button from "../../../shared/components/UI/Button/Button";
 import Spinner from "../../../shared/components/UI/Spinner/Spinner";
+import ErrorModal from "../../../shared/components/UI/ErrorModal/ErrorModal";
 import {
   VALIDATOR_EMAIL,
   VALIDATOR_MINLENGTH,
@@ -15,6 +16,7 @@ import "./Login.css";
 
 const Login = (props) => {
   const auth = useContext(AuthContext);
+  const history = useHistory();
   const [formState, inputChangeHandler] = useForm(
     {
       login: {
@@ -54,28 +56,28 @@ const Login = (props) => {
     );
   });
 
+
   const submitFormLogin = async (event) => {
     event.preventDefault();
 
-    const formData = new FormData();
-    formData.append("email", formState.inputs.login.email);
-    formData.append("password", formState.inputs.login.password);
-
     let response;
     try {
-      response = await sendRequest("users/login", "POST", formData);
-      console.log(response.data);
-    } catch (error) {}
+      response = await sendRequest("/users/login", "POST", {
+        email: formState.inputs.login.email.value,
+        password: formState.inputs.login.password.value,
+      });
 
-    // auth.login(response.data.userId);
+      auth.login(response.data.userId);
+      history.push("/");
+    } catch (error) {}
   };
 
   return (
-    <div className="form-login">
-      {isLoading ? (
-        <Spinner />
-      ) : (
-        <>
+    <React.Fragment>
+      <ErrorModal error={error} onClear={clearError} />
+      {isLoading && <Spinner />}
+      {!isLoading && (
+        <div className="form-login">
           <h1 className="form-login__header">Login</h1>
           <form className="form-login__body">
             {login}
@@ -92,9 +94,9 @@ const Login = (props) => {
           <p className="form-login__footer">
             Not register? <Link to="/register">Create an account</Link>
           </p>
-        </>
+        </div>
       )}
-    </div>
+    </React.Fragment>
   );
 };
 

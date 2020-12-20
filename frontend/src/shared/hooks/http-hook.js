@@ -12,10 +12,10 @@ export const useHttpClient = () => {
       setIsLoading(true);
 
       try {
-        if (method == "GET") {
+        if (method === "GET") {
           response = await axios.get(url);
-        } else if (method == "POST") {
-          response = await axios.post(url, body);
+        } else if (method === "POST") {
+          response = await axios.post(url, body, { headers: headers });
         }
         setIsLoading(true);
         return response;

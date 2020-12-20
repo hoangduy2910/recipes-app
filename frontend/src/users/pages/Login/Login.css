@@ -1,7 +1,6 @@
 .form-login {
-  width: 50%;
-  margin: 0 auto;
-  margin-top: 5rem;
+  width: 80%;
+  margin: 5rem auto;
   border-radius: 0.5rem;
   border: 1px solid #c85621;
   padding: 3rem;
@@ -23,3 +22,11 @@
   font-size: 1.1rem;
   font-weight: 600;
 }
+
+@media (min-width: 1200px) {
+  .form-login {
+    width: 40%;
+  }
+}
+
+

@@ -1,24 +1,35 @@
 .nav-links {
   list-style: none;
   display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .nav-links__item {
-  padding: .7rem;
+  padding: 0.7rem;
+}
+
+.nav-links__item--fill {
+  padding: 0.7rem;
+  color: white;
 }
 
 .nav-links__item a {
   text-decoration: none;
   color: #c85621;
   font-size: 1.1rem;
-  padding: .5rem;
-  transition: all .2s ease-in-out;
+  padding: 0.5rem;
+  transition: all 0.2s ease-in-out;
 }
 
 .nav-links__item a:hover {
-  border-radius: .2rem;
+  border-radius: 0.2rem;
   background-color: #c85621;
   color: white;
+}
+
+.nav-links__item--fill button:hover {
+  cursor: pointer;
 }
 
 @media (max-width: 768px) {
@@ -30,11 +41,13 @@
     align-items: center;
   }
 
-  .nav-links__item {
+  .nav-links__item,
+  .nav-links__item--fill {
     padding: 1rem;
   }
 
-  .nav-links__item a {
+  .nav-links__item a,
+  .nav-links__item--fill button {
     font-size: 1.5rem;
   }
 }
