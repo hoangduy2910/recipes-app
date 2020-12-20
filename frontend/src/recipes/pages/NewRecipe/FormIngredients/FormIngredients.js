@@ -5,7 +5,11 @@ import { VALIDATOR_REQUIRE } from "../../../../shared/utils/validators";
 
 const FormIngredients = (props) => {
   const ingredients = Object.keys(props.data).map((itemId, idx) => {
-    if (props.noController) {
+    if (
+      props.noController ||
+      idx !== Object.keys(props.data).length - 1 ||
+      idx === 0
+    ) {
       return (
         <Input
           key={idx}
@@ -43,7 +47,7 @@ const FormIngredients = (props) => {
   const formIngredients = (
     <React.Fragment>
       <div className="new-recipe-form__title">
-        <span>Ingredient</span>
+        <span>Ingredients</span>
         {!props.noController && (
           <i
             className="fas fa-plus-circle fa-2x"

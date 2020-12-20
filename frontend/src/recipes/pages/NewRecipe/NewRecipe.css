@@ -22,3 +22,9 @@
 .new-recipe-form__title i {
   color: #c85621;
 }
+
+.new-recipe-form__controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

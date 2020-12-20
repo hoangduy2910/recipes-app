@@ -1,5 +1,8 @@
+const mongoose = require("mongoose");
+
 const HttpError = require("../models/http-error");
 const Recipe = require("../models/recipe");
+const User = require("../models/user");
 
 const getAllRecipes = async (req, res, next) => {
   let recipes;
@@ -7,7 +10,7 @@ const getAllRecipes = async (req, res, next) => {
   try {
     recipes = await Recipe.find();
   } catch (error) {
-    return next(new HttpError("Fetching recipe failed.", 500));
+    return next(new HttpError("Fetching recipes failed.", 500));
   }
 
   return res.status(200).json({
@@ -15,19 +18,67 @@ const getAllRecipes = async (req, res, next) => {
   });
 };
 
-const getRecipesByUserId = (req, res, next) => {
-  return res.status(200).json({ message: "getRecipesByUserId" });
+const getRecipesByUserId = async (req, res, next) => {
+  const userId = req.params.userId;
+
+  let recipes;
+  try {
+    recipes = await Recipe.find({ user: userId });
+  } catch (error) {
+    return next("Fetching recipes failed. Something went wrong !", 500);
+  }
+
+  if (!recipes) {
+    return next("Could not find recipes for the provided user id", 404);
+  }
+
+  return res.json({
+    recipes: recipes.map((recipe) => recipe.toObject({ getters: true })),
+  });
 };
 
-const createRecipe = (req, res, next) => {
-  return res.status(200).json({ message: "createRecipe" });
+const createRecipe = async (req, res, next) => {
+  const { title, description, ingredients, steps, userId } = req.body;
+
+  let newRecipe = new Recipe({
+    title,
+    description,
+    image: "123",
+    ingredients,
+    steps,
+    user: userId,
+  });
+
+  let user;
+  try {
+    user = await User.findById(userId);
+  } catch (error) {
+    return next("Create recipe failed. Something went wrong.", 500);
+  }
+
+  if (!user) {
+    return next("Could not found user", 404);
+  }
+
+  try {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    await newRecipe.save({ session: session });
+    user.recipes.push(newRecipe);
+    await user.save({ session: session });
+    await session.commitTransaction();
+  } catch (error) {
+    return next("Create recipe failed. Something went wrong.", 500);
+  }
+
+  return res.json(newRecipe);
 };
 
-const updateRecipe = (req, res, next) => {
+const updateRecipe = async (req, res, next) => {
   return res.status(200).json({ message: "updateRecipe" });
 };
 
-const deleteRecipe = (req, res, next) => {
+const deleteRecipe = async (req, res, next) => {
   return res.status(200).json({ message: "deleteRecipe" });
 };
 

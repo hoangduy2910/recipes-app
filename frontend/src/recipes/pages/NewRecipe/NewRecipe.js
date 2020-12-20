@@ -1,14 +1,22 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useContext } from "react";
+import { useHistory } from "react-router-dom";
 
 import FormInfo from "./FormInfo/FormInfo";
 import FormIngredients from "./FormIngredients/FormIngredients";
 import FormSteps from "./FormSteps/FormSteps";
 import Button from "../../../shared/components/UI/Button/Button";
+import Spinner from "../../../shared/components/UI/Spinner/Spinner";
+import ErrorModal from "../../../shared/components/UI/ErrorModal/ErrorModal";
 import { useForm } from "../../../shared/hooks/form-hook";
+import { useHttpClient } from "../../../shared/hooks/http-hook";
+import { AuthContext } from "../../../shared/context/auth-context";
 import "./NewRecipe.css";
 
 const NewRecipe = (props) => {
-  const [formCount, setFormCount] = useState(2);
+  const auth = useContext(AuthContext);
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const history = useHistory();
+  const [formCount, setFormCount] = useState(1);
   const [
     formState,
     inputChangeHandler,
@@ -59,9 +67,7 @@ const NewRecipe = (props) => {
       } else {
         newInput =
           parseInt(
-            Object.keys(formState.inputs.steps)
-              .slice(-1)[0]
-              .split("ingredient")[1]
+            Object.keys(formState.inputs.steps).slice(-1)[0].split("step")[1]
           ) + 1;
         inputAddHandler(`step${newInput.toString()}`, "steps");
       }
@@ -76,80 +82,113 @@ const NewRecipe = (props) => {
     [inputRemoveHandler]
   );
 
-  const submitFormHandler = (event) => {
+  const submitFormHandler = async (event) => {
     event.preventDefault();
-  };
 
-  console.log(formState.inputs.ingredients);
+    console.log(auth.userId);
+
+    const title = formState.inputs.info.title.value;
+    const description = formState.inputs.info.description.value;
+    const ingredients = [];
+    for (const ingId in formState.inputs.ingredients) {
+      ingredients.push(formState.inputs.ingredients[ingId].value);
+    }
+    const steps = [];
+    for (const stepId in formState.inputs.steps) {
+      steps.push(formState.inputs.steps[stepId].value);
+    }
+
+    const formData = {
+      title: title,
+      description: description,
+      ingredients: ingredients,
+      steps: steps,
+      userId: auth.userId,
+    };
+
+    try {
+      await sendRequest("/recipes", "POST", formData);
+      history.push(`/${auth.userId}/recipes`);
+    } catch (error) {}
+  };
 
   return (
     <React.Fragment>
-      <form className="new-recipe-form">
-        {formCount === 1 && (
-          <FormInfo
-            data={formState.inputs.info}
-            inputChange={inputChangeHandler}
-          />
-        )}
-        {formCount === 2 && (
-          <FormIngredients
-            data={formState.inputs.ingredients}
-            inputChange={inputChangeHandler}
-            addIngredient={addInputHandler}
-            removeIngredient={removeInputHandler}
-          />
-        )}
-        {formCount === 3 && (
-          <FormSteps
-            data={formState.inputs.steps}
-            inputChange={inputChangeHandler}
-            addStep={addInputHandler}
-            removeStep={removeInputHandler}
-          />
-        )}
-        {formCount === 4 && (
-          <React.Fragment>
+      <ErrorModal error={error} onClear={clearError} />
+      {isLoading && <Spinner />}
+      {!isLoading && (
+        <form className="new-recipe-form">
+          {formCount === 1 && (
             <FormInfo
               data={formState.inputs.info}
               inputChange={inputChangeHandler}
             />
+          )}
+          {formCount === 2 && (
             <FormIngredients
               data={formState.inputs.ingredients}
               inputChange={inputChangeHandler}
-              noController
+              addIngredient={addInputHandler}
+              removeIngredient={removeInputHandler}
             />
+          )}
+          {formCount === 3 && (
             <FormSteps
               data={formState.inputs.steps}
               inputChange={inputChangeHandler}
-              noController
+              addStep={addInputHandler}
+              removeStep={removeInputHandler}
             />
+          )}
+          {formCount === 4 && (
+            <React.Fragment>
+              <FormInfo
+                data={formState.inputs.info}
+                inputChange={inputChangeHandler}
+              />
+              <FormIngredients
+                data={formState.inputs.ingredients}
+                inputChange={inputChangeHandler}
+                noController
+              />
+              <FormSteps
+                data={formState.inputs.steps}
+                inputChange={inputChangeHandler}
+                noController
+              />
+              <Button
+                fill
+                fullWidth
+                type="submit"
+                onClick={(event) => submitFormHandler(event)}
+                disabled={!formState.isValid}
+              >
+                Add Recipe
+              </Button>
+            </React.Fragment>
+          )}
+          <div className="new-recipe-form__controls">
             <Button
+              type="button"
               fill
-              fullWidth
-              type="submit"
-              onClick={(event) => submitFormHandler(event)}
+              onClick={backHandler}
+              disabled={formCount < 2}
             >
-              Add Recipe
+              Back
             </Button>
-          </React.Fragment>
-        )}
-        <Button
-          type="button"
-          fill
-          onClick={backHandler}
-          disabled={formCount < 2}
-        >
-          Back
-        </Button>
-        <Button
-          type="button"
-          fill
-          onClick={nextHandler}
-          disabled={!(formCount > 3) && !formState.isValid}
-        >
-          Next
-        </Button>
-      </form>
+            <Button
+              type="button"
+              fill
+              onClick={nextHandler}
+              disabled={
+                !formState.isValid || (formCount === 4 && formState.isValid)
+              }
+            >
+              Next
+            </Button>
+          </div>
+        </form>
+      )}
     </React.Fragment>
   );
 };

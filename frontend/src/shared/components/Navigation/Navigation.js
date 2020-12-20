@@ -13,7 +13,9 @@ const Navigation = (props) => {
     setIsShowNav((prevIsShowNav) => !prevIsShowNav);
   };
 
-  console.log(isShowNav);
+  const closeNavMenu = () => {
+    setIsShowNav(false);
+  };
 
   return (
     <React.Fragment>
@@ -24,7 +26,7 @@ const Navigation = (props) => {
           <Link to="/">Your Recipe</Link>
         </h1>
         <nav className={`nav__menu ${isShowNav ? "show" : "hide"}`}>
-          <NavLinks onClick={showNavMenu} />
+          <NavLinks onClick={closeNavMenu} />
         </nav>
         <div className="nav__btn" onClick={showNavMenu}>
           <i className="fas fa-bars fa-3x"></i>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 
 import Navigation from "./shared/components/Navigation/Navigation";
 import Login from "./users/pages/Login/Login";
@@ -28,12 +28,13 @@ const App = (props) => {
         <Route path="/" exact>
           <Recipes />
         </Route>
-        <Route path="/:userId/recipe">
+        <Route path="/:userId/recipes">
           <UserRecipes />
         </Route>
         <Route path="/recipe/new">
           <NewRecipe />
         </Route>
+        <Redirect to="/" />
       </Switch>
     );
   } else {
@@ -48,6 +49,7 @@ const App = (props) => {
         <Route path="/register">
           <Register />
         </Route> 
+        <Redirect to="/login" />
       </Switch>
     );
   }

@@ -28,15 +28,17 @@ const Login = (props) => {
   );
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
-  let label, type, validator;
+  let label, type, errorText, validator;
   const login = Object.keys(formState.inputs.login).map((itemId, idx) => {
     if (itemId === "email") {
       label = "Email";
       type = "email";
+      errorText= "Please enter a valid email.";
       validator = VALIDATOR_EMAIL();
     } else {
       label = "Password";
       type = "password";
+      errorText= "Please enter a valid password (6 character).";
       validator = VALIDATOR_MINLENGTH(6);
     }
 
@@ -49,13 +51,12 @@ const Login = (props) => {
         label={label}
         validators={[validator]}
         initialValue={formState.inputs.login[itemId].value}
-        errorText={`Please enter a valid ${itemId}.`}
+        errorText={errorText}
         typeForm="login"
         onInput={inputChangeHandler}
       />
     );
   });
-
 
   const submitFormLogin = async (event) => {
     event.preventDefault();
@@ -85,7 +86,6 @@ const Login = (props) => {
               fill
               fullWidth
               type="submit"
-              disabled={!formState.isValid}
               onClick={submitFormLogin}
             >
               Login

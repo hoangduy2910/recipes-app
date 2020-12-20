@@ -17,7 +17,7 @@ export const useHttpClient = () => {
         } else if (method === "POST") {
           response = await axios.post(url, body, { headers: headers });
         }
-        setIsLoading(true);
+        setIsLoading(false);
         return response;
       } catch (error) {
         const message = error.response.data.message;
