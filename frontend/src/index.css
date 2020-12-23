@@ -1,9 +1,5 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap");
 
-/* html {
-  
-} */
-
 *,
 *::before,
 *::after {
@@ -15,7 +11,3 @@
 body {
   font-family: "Open Sans", sans-serif;
 }
-
-/** COLORS 
-  main-color: #f9ece6;
-**/

@@ -8,7 +8,16 @@ const RecipeList = (props) => {
 
   if (props.recipes) {
     recipes = props.recipes.map((recipe, index) => (
-      <RecipeItem key={index} title={recipe.title} image={recipe.image} />
+      <RecipeItem
+        key={index}
+        id={recipe.id}
+        title={recipe.title}
+        description={recipe.description}
+        preparationTime={recipe.preparationTime}
+        cookingTime={recipe.cookingTime}
+        servings={recipe.servings}
+        image={recipe.image}
+      />
     ));
   }
 

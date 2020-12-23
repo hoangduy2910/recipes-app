@@ -16,7 +16,6 @@ const UserRecipes = (props) => {
       let response;
       try {
         response = await sendRequest(`/recipes/user/${userId}`, "GET");
-        console.log(response.data);
         setRecipes(response.data.recipes);
       } catch (error) {}
     };

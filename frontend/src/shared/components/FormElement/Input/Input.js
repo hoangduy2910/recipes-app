@@ -49,17 +49,34 @@ const Input = (props) => {
     });
   };
 
-  const element =
-    props.element === "input" ? (
-      <input
-        id={props.id}
-        type={props.type}
-        placeholder={props.placeholder}
-        onChange={changeHandler}
-        onBlur={touchHandler}
-        value={inputState.value}
-      />
-    ) : (
+  let element;
+  if (props.element === "input") {
+    if (props.type === "number") {
+      element = (
+        <input
+          id={props.id}
+          type={props.type}
+          min={1}
+          placeholder={props.placeholder}
+          onChange={changeHandler}
+          onBlur={touchHandler}
+          value={inputState.value}
+        />
+      );
+    } else {
+      element = (
+        <input
+          id={props.id}
+          type={props.type}
+          placeholder={props.placeholder}
+          onChange={changeHandler}
+          onBlur={touchHandler}
+          value={inputState.value}
+        />
+      );
+    }
+  } else {
+    element = (
       <textarea
         id={props.id}
         row={props.row || 5}
@@ -68,6 +85,7 @@ const Input = (props) => {
         value={inputState.value}
       />
     );
+  }
 
   return (
     <div className="input-element">

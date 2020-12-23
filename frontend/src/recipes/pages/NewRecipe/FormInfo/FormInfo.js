@@ -4,16 +4,29 @@ import Input from "../../../../shared/components/FormElement/Input/Input";
 import { VALIDATOR_REQUIRE } from "../../../../shared/utils/validators";
 
 const FormInfo = React.memo((props) => {
-  const info = Object.keys(props.data).map((itemId, idx) => {
-    let element = "";
-    let label = "";
+  let element, label, type;
 
+  const info = Object.keys(props.data).map((itemId, idx) => {
     if (itemId === "title") {
       element = "input";
       label = "Title";
-    } else {
+      type = "text";
+    } else if (itemId === "description") {
       element = "textarea";
       label = "Description";
+      type = "text";
+    } else if (itemId === "preparationTime") {
+      element = "input";
+      label = "Preparation Time (minute)";
+      type = "number";
+    } else if (itemId === "cookingTime") {
+      element = "input";
+      label = "Cooking Time (minute)";
+      type = "number";
+    } else {
+      element = "input";
+      label = "Servings";
+      type = "number";
     }
 
     return (
@@ -22,6 +35,7 @@ const FormInfo = React.memo((props) => {
         id={itemId}
         element={element}
         label={label}
+        type={type}
         validators={[VALIDATOR_REQUIRE()]}
         initialValue={props.data[itemId].value}
         errorText={`Please enter a valid ${itemId}.`}
@@ -34,7 +48,7 @@ const FormInfo = React.memo((props) => {
   const formInfo = (
     <React.Fragment>
       <div className="new-recipe-form__title">
-        <span>Info</span>
+        <span>Information</span>
       </div>
       {info}
     </React.Fragment>

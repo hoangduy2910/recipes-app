@@ -38,12 +38,25 @@ const getRecipesByUserId = async (req, res, next) => {
 };
 
 const createRecipe = async (req, res, next) => {
-  const { title, description, ingredients, steps, userId } = req.body;
+  const {
+    title,
+    description,
+    preparationTime,
+    cookingTime,
+    servings,
+    ingredients,
+    steps,
+    userId,
+  } = req.body;
 
   let newRecipe = new Recipe({
     title,
     description,
-    image: "123",
+    preparationTime,
+    cookingTime,
+    servings,
+    image:
+      "https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fimages.media-allrecipes.com%2Fuserphotos%2F848007.jpg&w=596&h=399&c=sc&poi=face&q=85",
     ingredients,
     steps,
     user: userId,

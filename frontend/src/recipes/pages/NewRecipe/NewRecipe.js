@@ -33,6 +33,18 @@ const NewRecipe = (props) => {
           value: "",
           isValid: false,
         },
+        preparationTime: {
+          value: 1,
+          isValid: false,
+        },
+        cookingTime: {
+          value: 1,
+          isValid: false,
+        },
+        servings: {
+          value: 1,
+          isValid: false,
+        },
       },
       ingredients: {
         ingredient1: { value: "", isValid: false },
@@ -85,10 +97,11 @@ const NewRecipe = (props) => {
   const submitFormHandler = async (event) => {
     event.preventDefault();
 
-    console.log(auth.userId);
-
     const title = formState.inputs.info.title.value;
     const description = formState.inputs.info.description.value;
+    const preparationTime = formState.inputs.info.preparationTime.value;
+    const cookingTime = formState.inputs.info.cookingTime.value;
+    const servings = formState.inputs.info.preparationTime.value;
     const ingredients = [];
     for (const ingId in formState.inputs.ingredients) {
       ingredients.push(formState.inputs.ingredients[ingId].value);
@@ -102,6 +115,9 @@ const NewRecipe = (props) => {
       title: title,
       description: description,
       ingredients: ingredients,
+      preparationTime: preparationTime,
+      cookingTime: cookingTime,
+      servings: servings,
       steps: steps,
       userId: auth.userId,
     };

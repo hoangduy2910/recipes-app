@@ -27,7 +27,6 @@ const Register = (props) => {
 
   const submitFormRegister = (event) => {
     event.preventDefault();
-    console.log(formState.inputs.register);
   };
 
   const register = Object.keys(formState.inputs.register).map((itemId, idx) => {

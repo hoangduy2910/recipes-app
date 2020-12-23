@@ -43,7 +43,10 @@
 
   .nav-links__item,
   .nav-links__item--fill {
-    padding: 1rem;
+    padding: 0;
+    margin: 1rem 0;
+    width: 100%;
+    text-align: center;
   }
 
   .nav-links__item a,
