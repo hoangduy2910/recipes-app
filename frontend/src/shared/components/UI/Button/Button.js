@@ -10,6 +10,8 @@ const Button = (props) => {
     classes.push("btn--ouline");
   } else if (props.fill) {
     classes.push("btn--fill");
+  } else if (props.fillSmall) {
+    classes.push("btn--fill-small");
   }
 
   if (props.disabled) {

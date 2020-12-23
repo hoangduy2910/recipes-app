@@ -35,14 +35,18 @@ const NewRecipe = (props) => {
         },
         preparationTime: {
           value: 1,
-          isValid: false,
+          isValid: true,
         },
         cookingTime: {
           value: 1,
-          isValid: false,
+          isValid: true,
         },
         servings: {
           value: 1,
+          isValid: true,
+        },
+        image: {
+          value: null,
           isValid: false,
         },
       },
@@ -102,6 +106,7 @@ const NewRecipe = (props) => {
     const preparationTime = formState.inputs.info.preparationTime.value;
     const cookingTime = formState.inputs.info.cookingTime.value;
     const servings = formState.inputs.info.preparationTime.value;
+    const image = formState.inputs.info.image.value;
     const ingredients = [];
     for (const ingId in formState.inputs.ingredients) {
       ingredients.push(formState.inputs.ingredients[ingId].value);
@@ -114,18 +119,19 @@ const NewRecipe = (props) => {
     const formData = {
       title: title,
       description: description,
-      ingredients: ingredients,
       preparationTime: preparationTime,
       cookingTime: cookingTime,
       servings: servings,
+      image: image,
+      ingredients: ingredients,
       steps: steps,
       userId: auth.userId,
     };
 
-    try {
-      await sendRequest("/recipes", "POST", formData);
-      history.push(`/${auth.userId}/recipes`);
-    } catch (error) {}
+    // try {
+    //   await sendRequest("/recipes", "POST", formData);
+    //   history.push(`/${auth.userId}/recipes`);
+    // } catch (error) {}
   };
 
   return (

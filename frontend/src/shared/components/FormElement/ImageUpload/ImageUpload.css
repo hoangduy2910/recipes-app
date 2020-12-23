@@ -1,0 +1,12 @@
+.image-upload {
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.image-upload button {
+  margin-bottom: 1rem;
+}
+
+.image-upload img {
+  width: 100%;
+}

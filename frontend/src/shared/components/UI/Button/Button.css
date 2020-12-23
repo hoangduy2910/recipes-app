@@ -49,6 +49,14 @@
   border-radius: .2rem;
 }
 
+.btn--fill-small {
+  color: white;
+  background-color: #c85621;
+  padding: .3rem;
+  font-size: 1rem;
+  border-radius: .3rem;
+}
+
 .btn--disabled {
   background-color: #ccc;
   color: black;

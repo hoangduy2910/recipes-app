@@ -1,6 +1,7 @@
 import React from "react";
 
 import Input from "../../../../shared/components/FormElement/Input/Input";
+import ImageUpload from "../../../../shared/components/FormElement/ImageUpload/ImageUpload";
 import { VALIDATOR_REQUIRE } from "../../../../shared/utils/validators";
 
 const FormInfo = React.memo((props) => {
@@ -29,20 +30,35 @@ const FormInfo = React.memo((props) => {
       type = "number";
     }
 
-    return (
-      <Input
-        key={idx}
-        id={itemId}
-        element={element}
-        label={label}
-        type={type}
-        validators={[VALIDATOR_REQUIRE()]}
-        initialValue={props.data[itemId].value}
-        errorText={`Please enter a valid ${itemId}.`}
-        typeForm="info"
-        onInput={props.inputChange}
-      />
-    );
+    let input;
+    if (itemId === "image") {
+      input = (
+        <ImageUpload
+          key={idx}
+          id={itemId}
+          initialValue={props.data[itemId].value}
+          typeForm="info"
+          onInput={props.inputChange}
+        />
+      );
+    } else {
+      input = (
+        <Input
+          key={idx}
+          id={itemId}
+          element={element}
+          label={label}
+          type={type}
+          validators={[VALIDATOR_REQUIRE()]}
+          initialValue={props.data[itemId].value}
+          errorText={`Please enter a valid ${itemId}.`}
+          typeForm="info"
+          onInput={props.inputChange}
+        />
+      );
+    }
+
+    return input;
   });
 
   const formInfo = (
