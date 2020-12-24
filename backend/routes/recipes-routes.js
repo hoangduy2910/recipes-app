@@ -1,6 +1,7 @@
 const express = require("express");
 
 const recipesController = require("../controllers/recipes-controllers");
+const fileUpload = require("../middlewares/file-upload");
 
 const router = express.Router();
 
@@ -8,7 +9,7 @@ router.get("/", recipesController.getAllRecipes);
 
 router.get("/user/:userId", recipesController.getRecipesByUserId);
 
-router.post("/", recipesController.createRecipe);
+router.post("/", fileUpload.single("image"), recipesController.createRecipe);
 
 router.post("/:recipeId", recipesController.updateRecipe);
 

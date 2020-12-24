@@ -116,22 +116,33 @@ const NewRecipe = (props) => {
       steps.push(formState.inputs.steps[stepId].value);
     }
 
-    const formData = {
-      title: title,
-      description: description,
-      preparationTime: preparationTime,
-      cookingTime: cookingTime,
-      servings: servings,
-      image: image,
-      ingredients: ingredients,
-      steps: steps,
-      userId: auth.userId,
-    };
+    // const formData = {
+    //   title: title,
+    //   description: description,
+    //   preparationTime: preparationTime,
+    //   cookingTime: cookingTime,
+    //   servings: servings,
+    //   image: image,
+    //   ingredients: ingredients,
+    //   steps: steps,
+    //   userId: auth.userId,
+    // };
 
-    // try {
-    //   await sendRequest("/recipes", "POST", formData);
-    //   history.push(`/${auth.userId}/recipes`);
-    // } catch (error) {}
+    try {
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("description", description);
+      formData.append("preparationTime", preparationTime);
+      formData.append("cookingTime", cookingTime);
+      formData.append("servings", servings);
+      formData.append("image", image);
+      formData.append("ingredients", ingredients);
+      formData.append("steps", steps);
+      formData.append("userId", auth.userId);
+
+      await sendRequest("/recipes", "POST", formData);
+      history.push(`/${auth.userId}/recipes`);
+    } catch (error) {}
   };
 
   return (

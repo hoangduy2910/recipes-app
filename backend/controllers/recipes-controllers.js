@@ -49,14 +49,15 @@ const createRecipe = async (req, res, next) => {
     userId,
   } = req.body;
 
+  console.log("[CreateRecipe]");
+
   let newRecipe = new Recipe({
     title,
     description,
     preparationTime,
     cookingTime,
     servings,
-    image:
-      "https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fimages.media-allrecipes.com%2Fuserphotos%2F848007.jpg&w=596&h=399&c=sc&poi=face&q=85",
+    image: req.file.path,
     ingredients,
     steps,
     user: userId,

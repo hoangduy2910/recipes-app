@@ -11,15 +11,3 @@
 body {
   font-family: "Open Sans", sans-serif;
 }
-
-@media (max-width: 768px) {
-  :root {
-    font-size: .85rem;
-  }
-}
-
-@media (max-width: 576px) {
-  :root {
-    font-size: .8rem;
-  }
-}

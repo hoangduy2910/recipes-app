@@ -8,7 +8,7 @@ import { useHttpClient } from "../../../shared/hooks/http-hook";
 
 const UserRecipes = (props) => {
   const userId = useParams().userId;
-  const [recipes, setRecipes] = useState();
+  const [recipes, setRecipes] = useState([]);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
   useEffect(() => {
