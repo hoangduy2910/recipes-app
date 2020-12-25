@@ -7,8 +7,6 @@ const MIME_TYPE_MAP = {
   "image/jpeg": "jpeg",
 };
 
-console.log("[FileUpload]");
-
 const fileUpload = multer({
   limits: 500000,
   storage: multer.diskStorage({

@@ -1,4 +1,8 @@
+const { error } = require("console");
+const fs = require("fs");
+
 const mongoose = require("mongoose");
+const sharp = require("sharp");
 
 const HttpError = require("../models/http-error");
 const Recipe = require("../models/recipe");
@@ -49,7 +53,22 @@ const createRecipe = async (req, res, next) => {
     userId,
   } = req.body;
 
-  console.log("[CreateRecipe]");
+  try {
+    await sharp(req.file.path)
+      .resize(325, 240)
+      .toFile(
+        `${req.file.destination}/325x240-${req.file.filename}`,
+        (error) => {
+          if (error) {
+            return next("Create recipe failed. Something went wrong.", 500);
+          }
+
+          fs.unlink(req.file.path, (error) => {});
+        }
+      );
+  } catch (error) {
+    return next("Create recipe failed. Something went wrong.", 500);
+  }
 
   let newRecipe = new Recipe({
     title,
@@ -57,7 +76,7 @@ const createRecipe = async (req, res, next) => {
     preparationTime,
     cookingTime,
     servings,
-    image: req.file.path,
+    image: `${req.file.destination}/325x240-${req.file.filename}`,
     ingredients,
     steps,
     user: userId,

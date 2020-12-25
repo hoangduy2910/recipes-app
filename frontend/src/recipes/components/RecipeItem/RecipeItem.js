@@ -7,7 +7,10 @@ const RecipeItem = (props) => {
   return (
     <Link className="recipe-item" to={`/recipe/${props.id}`}>
       <div className="recipe-item__image">
-        <img src={`http://localhost:5000/${props.image}`} alt={props.title} />
+        <img
+          src={`http://localhost:5000/${props.image}`}
+          alt={props.title}
+        />
       </div>
       <div className="recipe-item__info">
         <h2>{props.title}</h2>
