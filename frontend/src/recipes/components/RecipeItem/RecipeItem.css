@@ -25,6 +25,7 @@
 
 .recipe-item__image img {
   width: 100%;
+  min-width: 20.3125rem;
   height: 15rem;
   object-fit: cover;
   border-top-left-radius: 1rem;
@@ -37,11 +38,10 @@
 }
 
 .recipe-item__info h2 {
-  height: 4rem;
-  font-size: 1.5rem;
+  height: 5rem;
+  font-size: 1.3rem;
   color: #c85621;
   text-align: center;
-  white-space: nowrap;
 }
 
 .recipe-item__info p {

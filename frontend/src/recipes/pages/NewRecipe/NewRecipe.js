@@ -124,8 +124,8 @@ const NewRecipe = (props) => {
       formData.append("cookingTime", cookingTime);
       formData.append("servings", servings);
       formData.append("image", image);
-      formData.append("ingredients", ingredients);
-      formData.append("steps", steps);
+      formData.append("ingredients", JSON.stringify(ingredients));
+      formData.append("steps", JSON.stringify(steps));
       formData.append("userId", auth.userId);
 
       const response = await sendRequest("/recipes", "POST", formData);

@@ -7,6 +7,8 @@ const router = express.Router();
 
 router.get("/", recipesController.getAllRecipes);
 
+router.get("/:recipeId", recipesController.getRecipeById);
+
 router.get("/user/:userId", recipesController.getRecipesByUserId);
 
 router.post("/", fileUpload.single("image"), recipesController.createRecipe);

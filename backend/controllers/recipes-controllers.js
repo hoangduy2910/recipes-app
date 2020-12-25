@@ -10,7 +10,6 @@ const User = require("../models/user");
 
 const getAllRecipes = async (req, res, next) => {
   let recipes;
-
   try {
     recipes = await Recipe.find();
   } catch (error) {
@@ -20,6 +19,19 @@ const getAllRecipes = async (req, res, next) => {
   return res.status(200).json({
     recipes: recipes.map((recipe) => recipe.toObject({ getters: true })),
   });
+};
+
+const getRecipeById = async (req, res, next) => {
+  const recipeId = req.params.recipeId;
+
+  let recipe;
+  try {
+    recipe = await Recipe.findById(recipeId);
+  } catch (error) {
+    return next(new HttpError("Fetching recipe failed.", 500));
+  }
+
+  return res.json({ recipe: recipe.toObject({ getters: true }) });
 };
 
 const getRecipesByUserId = async (req, res, next) => {
@@ -70,6 +82,9 @@ const createRecipe = async (req, res, next) => {
     return next("Create recipe failed. Something went wrong.", 500);
   }
 
+  let ingsParse = JSON.parse(ingredients);
+  let stepsParse = JSON.parse(steps);
+
   let newRecipe = new Recipe({
     title,
     description,
@@ -77,8 +92,8 @@ const createRecipe = async (req, res, next) => {
     cookingTime,
     servings,
     image: `${req.file.destination}/325x240-${req.file.filename}`,
-    ingredients,
-    steps,
+    ingredients: ingsParse,
+    steps: stepsParse,
     user: userId,
   });
 
@@ -120,3 +135,4 @@ exports.getRecipesByUserId = getRecipesByUserId;
 exports.createRecipe = createRecipe;
 exports.updateRecipe = updateRecipe;
 exports.deleteRecipe = deleteRecipe;
+exports.getRecipeById = getRecipeById;
