@@ -34,14 +34,14 @@ const App = (props) => {
         <Route path="/" exact>
           <Recipes />
         </Route>
-        <Route path="/recipe/:recipeId">
-          <RecipeDetail />
+        <Route path="/recipe/new">
+          <NewRecipe />
         </Route>
         <Route path="/:userId/recipes">
           <UserRecipes />
         </Route>
-        <Route path="/recipe/new">
-          <NewRecipe />
+        <Route path="/recipe/:recipeId">
+          <RecipeDetail />
         </Route>
         <Redirect to="/" />
       </Switch>

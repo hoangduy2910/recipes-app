@@ -2,6 +2,14 @@
   margin-top: 5rem;
 }
 
+.recipe-detail__controllers {
+  margin-bottom: 1rem;
+}
+
+.recipe-detail__controllers button:first-child {
+  margin-right: 1rem;
+}
+
 .recipe-detail__info {
   margin-bottom: 3rem;
   display: grid;
@@ -77,6 +85,7 @@
 .recipe-detail__steps p {
   font-size: 1rem;
   margin-bottom: 1.5rem;
+  line-height: 1.7rem;
 }
 
 .recipe-detail__step {
@@ -110,4 +119,10 @@
   .recipe-detail__info-sub {
     margin-top: 2rem;
   }
+
+  .recipe-detail__info-image {
+    margin-right: 0;
+  }
 }
+
+

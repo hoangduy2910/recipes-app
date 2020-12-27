@@ -1,5 +1,5 @@
-import React, { useState, useCallback, useContext } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useState, useEffect, useCallback, useContext } from "react";
+import { useHistory, useLocation } from "react-router-dom";
 
 import FormInfo from "./FormInfo/FormInfo";
 import FormIngredients from "./FormIngredients/FormIngredients";
@@ -14,51 +14,131 @@ import "./NewRecipe.css";
 
 const NewRecipe = (props) => {
   const auth = useContext(AuthContext);
-  const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const history = useHistory();
+  const recipeId = useLocation().search.split("=")[1];
+
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [formCount, setFormCount] = useState(1);
+  const [isCreated, setIsCreated] = useState(true);
+
   const [
     formState,
     inputChangeHandler,
     inputAddHandler,
     inputRemoveHandler,
+    setFormData,
   ] = useForm(
     {
-      info: {
-        title: {
-          value: "",
-          isValid: false,
-        },
-        description: {
-          value: "",
-          isValid: false,
-        },
-        preparationTime: {
-          value: 1,
-          isValid: true,
-        },
-        cookingTime: {
-          value: 1,
-          isValid: true,
-        },
-        servings: {
-          value: 1,
-          isValid: true,
-        },
-        image: {
-          value: null,
-          isValid: false,
-        },
-      },
-      ingredients: {
-        ingredient1: { value: "", isValid: false },
-      },
-      steps: {
-        step1: { value: "", isValid: false },
-      },
+      info: {},
+      ingredients: {},
+      steps: {},
     },
     false
   );
+
+  useEffect(() => {
+    try {
+      if (recipeId) {
+        const getRecipeById = async () => {
+          const response = await sendRequest(`/recipes/${recipeId}`, "GET");
+
+          if (response.data.recipe) {
+            const recipe = response.data.recipe;
+
+            const infoData = {
+              title: {
+                value: recipe.title,
+                isValid: true,
+              },
+              description: {
+                value: recipe.description,
+                isValid: true,
+              },
+              preparationTime: {
+                value: recipe.preparationTime,
+                isValid: true,
+              },
+              cookingTime: {
+                value: recipe.cookingTime,
+                isValid: true,
+              },
+              servings: {
+                value: recipe.servings,
+                isValid: true,
+              },
+            };
+
+            const ingredientsData = {};
+            recipe.ingredients.map((ing, idx) => {
+              return (ingredientsData[`ingredient${idx + 1}`] = {
+                value: ing,
+                isValid: true,
+              });
+            });
+
+            const stepsData = {};
+            recipe.steps.map((step, idx) => {
+              return (stepsData[`step${idx + 1}`] = {
+                value: step,
+                isValid: true,
+              });
+            });
+
+            setFormData(
+              {
+                info: infoData,
+                ingredients: ingredientsData,
+                steps: stepsData,
+              },
+              true
+            );
+
+            setIsCreated(false);
+          }
+        };
+
+        getRecipeById();
+      } else {
+        setFormData(
+          {
+            info: {
+              title: {
+                value: "",
+                isValid: false,
+              },
+              description: {
+                value: "",
+                isValid: false,
+              },
+              preparationTime: {
+                value: 1,
+                isValid: true,
+              },
+              cookingTime: {
+                value: 1,
+                isValid: true,
+              },
+              servings: {
+                value: 1,
+                isValid: true,
+              },
+              image: {
+                value: null,
+                isValid: false,
+              },
+            },
+            ingredients: {
+              ingredient1: { value: "", isValid: false },
+            },
+            steps: {
+              step1: { value: "", isValid: false },
+            },
+          },
+          false
+        );
+      }
+    } catch (error) {}
+  }, [recipeId, sendRequest, setFormData]);
 
   const nextHandler = () => {
     setFormCount(formCount + 1);
@@ -106,7 +186,7 @@ const NewRecipe = (props) => {
     const preparationTime = formState.inputs.info.preparationTime.value;
     const cookingTime = formState.inputs.info.cookingTime.value;
     const servings = formState.inputs.info.servings.value;
-    const image = formState.inputs.info.image.value;
+
     const ingredients = [];
     for (const ingId in formState.inputs.ingredients) {
       ingredients.push(formState.inputs.ingredients[ingId].value);
@@ -117,21 +197,45 @@ const NewRecipe = (props) => {
     }
 
     try {
-      const formData = new FormData();
-      formData.append("title", title);
-      formData.append("description", description);
-      formData.append("preparationTime", preparationTime);
-      formData.append("cookingTime", cookingTime);
-      formData.append("servings", servings);
-      formData.append("image", image);
-      formData.append("ingredients", JSON.stringify(ingredients));
-      formData.append("steps", JSON.stringify(steps));
-      formData.append("userId", auth.userId);
+      if (isCreated) {
+        const image = formState.inputs.info.image.value;
 
-      const response = await sendRequest("/recipes", "POST", formData);
+        const formData = new FormData();
+        formData.append("title", title);
+        formData.append("description", description);
+        formData.append("preparationTime", preparationTime);
+        formData.append("cookingTime", cookingTime);
+        formData.append("servings", servings);
+        formData.append("image", image);
+        formData.append("ingredients", JSON.stringify(ingredients));
+        formData.append("steps", JSON.stringify(steps));
+        formData.append("userId", auth.userId);
 
-      if (response.data) {
-        history.push(`/${auth.userId}/recipes`);
+        const response = await sendRequest("/recipes", "POST", formData);
+        if (response.data) {
+          history.push(`/${auth.userId}/recipes`);
+        }
+      } else {
+        const formUpdate = {
+          title: title,
+          description: description,
+          preparationTime: preparationTime,
+          cookingTime: cookingTime,
+          servings: servings,
+          ingredients: ingredients,
+          steps: steps,
+          userId: auth.userId,
+        };
+
+        const response = await sendRequest(
+          `/recipes/${recipeId}`,
+          "POST",
+          formUpdate
+        );
+
+        if (response.data) {
+          history.push(`/recipe/${recipeId}`);
+        }
       }
     } catch (error) {}
   };
@@ -187,7 +291,7 @@ const NewRecipe = (props) => {
                 onClick={(event) => submitFormHandler(event)}
                 disabled={!formState.isValid}
               >
-                Add Recipe
+                {isCreated ? "Add Recipe" : "Update Recipe"}
               </Button>
             </React.Fragment>
           )}

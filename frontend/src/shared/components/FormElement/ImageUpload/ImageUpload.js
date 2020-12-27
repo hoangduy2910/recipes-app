@@ -13,12 +13,17 @@ const ImageUpload = (props) => {
       return;
     }
 
+    if (typeof props.initialValue === "string") {
+      setPreviewUrl(`http://localhost:5000/${props.initialValue}`);
+      return;
+    }
+
     const fileReader = new FileReader();
     fileReader.onload = () => {
       setPreviewUrl(fileReader.result);
     };
     fileReader.readAsDataURL(file);
-  }, [file]);
+  }, [file, props.initialValue]);
 
   const pickedImageHandler = (event) => {
     let file, fileIsValid;

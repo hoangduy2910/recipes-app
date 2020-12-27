@@ -41,6 +41,7 @@
 
 .btn--ouline:hover {
   color: white;
+  cursor: pointer;
 }
 
 .btn--fill {

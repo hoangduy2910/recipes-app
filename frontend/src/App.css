@@ -7,3 +7,9 @@
     margin: 0 2rem;
   }
 }
+
+@media (max-width: 576px) {
+  .main {
+    margin: 0 1rem;
+  }
+}

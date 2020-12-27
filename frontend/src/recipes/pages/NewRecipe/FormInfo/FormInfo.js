@@ -4,7 +4,7 @@ import Input from "../../../../shared/components/FormElement/Input/Input";
 import ImageUpload from "../../../../shared/components/FormElement/ImageUpload/ImageUpload";
 import { VALIDATOR_REQUIRE } from "../../../../shared/utils/validators";
 
-const FormInfo = React.memo((props) => {
+const FormInfo = (props) => {
   let element, label, type;
 
   const info = Object.keys(props.data).map((itemId, idx) => {
@@ -71,6 +71,6 @@ const FormInfo = React.memo((props) => {
   );
 
   return formInfo;
-});
+};
 
-export default FormInfo;
+export default React.memo(FormInfo);

@@ -41,11 +41,15 @@ const getRecipesByUserId = async (req, res, next) => {
   try {
     recipes = await Recipe.find({ user: userId });
   } catch (error) {
-    return next("Fetching recipes failed. Something went wrong !", 500);
+    return next(
+      new HttpError("Fetching recipes failed. Something went wrong !", 500)
+    );
   }
 
   if (!recipes) {
-    return next("Could not find recipes for the provided user id", 404);
+    return next(
+      new HttpError("Could not find recipes for the provided user id", 404)
+    );
   }
 
   return res.json({
@@ -72,14 +76,18 @@ const createRecipe = async (req, res, next) => {
         `${req.file.destination}/325x240-${req.file.filename}`,
         (error) => {
           if (error) {
-            return next("Create recipe failed. Something went wrong.", 500);
+            return next(
+              new HttpError("Create recipe failed. Something went wrong.", 500)
+            );
           }
 
           fs.unlink(req.file.path, (error) => {});
         }
       );
   } catch (error) {
-    return next("Create recipe failed. Something went wrong.", 500);
+    return next(
+      new HttpError("Create recipe failed. Something went wrong.", 500)
+    );
   }
 
   let ingsParse = JSON.parse(ingredients);
@@ -101,11 +109,13 @@ const createRecipe = async (req, res, next) => {
   try {
     user = await User.findById(userId);
   } catch (error) {
-    return next("Create recipe failed. Something went wrong.", 500);
+    return next(
+      new HttpError("Create recipe failed. Something went wrong.", 500)
+    );
   }
 
   if (!user) {
-    return next("Could not found user", 404);
+    return next(new HttpError("Could not found user", 404));
   }
 
   try {
@@ -116,14 +126,55 @@ const createRecipe = async (req, res, next) => {
     await user.save({ session: session });
     await session.commitTransaction();
   } catch (error) {
-    return next("Create recipe failed. Something went wrong.", 500);
+    return next(
+      new HttpError("Create recipe failed. Something went wrong.", 500)
+    );
   }
 
   return res.json(newRecipe);
 };
 
 const updateRecipe = async (req, res, next) => {
-  return res.status(200).json({ message: "updateRecipe" });
+  const {
+    title,
+    description,
+    preparationTime,
+    cookingTime,
+    servings,
+    ingredients,
+    steps,
+    userId,
+  } = req.body;
+
+  const recipeId = req.params.recipeId;
+
+  let updatedRecipe;
+  try {
+    updatedRecipe = await Recipe.findById(recipeId);
+  } catch (error) {
+    return next(
+      new HttpError("Update recipe failed. Something went wrong.", 500)
+    );
+  }
+
+  updatedRecipe.title = title;
+  updatedRecipe.description = description;
+  updatedRecipe.preparationTime = preparationTime;
+  updatedRecipe.cookingTime = cookingTime;
+  updatedRecipe.servings = servings;
+  updatedRecipe.ingredients = ingredients;
+  updatedRecipe.steps = steps;
+  updatedRecipe.userId = userId;
+
+  try {
+    await updatedRecipe.save();
+  } catch (error) {
+    return next(
+      new HttpError("Update recipe failed. Something went wrong.", 500)
+    );
+  }
+
+  return res.json({ recipe: updatedRecipe.toObject({ getters: true }) });
 };
 
 const deleteRecipe = async (req, res, next) => {

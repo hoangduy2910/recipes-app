@@ -12,6 +12,10 @@ const Button = (props) => {
     classes.push("btn--fill");
   } else if (props.fillSmall) {
     classes.push("btn--fill-small");
+  } else if (props.oulineGreen) {
+    classes.push("btn--ouline-green");
+  } else if (props.oulineRed) {
+    classes.push("btn--ouline-red");
   }
 
   if (props.disabled) {

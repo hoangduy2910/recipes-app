@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+// import Button from "../../../shared/components/UI/Button/Button";
+// import { AuthContext } from "../../../shared/context/auth-context";
 import "./RecipeItem.css";
 
 const RecipeItem = (props) => {

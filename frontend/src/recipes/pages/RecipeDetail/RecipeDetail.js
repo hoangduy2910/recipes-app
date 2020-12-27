@@ -1,13 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect, useContext, useCallback } from "react";
+import { useParams, useHistory } from "react-router-dom";
 
 import Spinner from "../../../shared/components/UI/Spinner/Spinner";
 import ErrorModal from "../../../shared/components/UI/ErrorModal/ErrorModal";
+import Button from "../../../shared/components/UI/Button/Button";
 import { useHttpClient } from "../../../shared/hooks/http-hook";
+import { AuthContext } from "../../../shared/context/auth-context";
 import "./RecipeDetail.css";
 
 const RecipeDetail = (props) => {
+  const auth = useContext(AuthContext);
   const recipeId = useParams().recipeId;
+  const history = useHistory();
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [recipeDetail, setRecipeDetail] = useState();
 
@@ -25,12 +29,36 @@ const RecipeDetail = (props) => {
     } catch (error) {}
   }, [recipeId, sendRequest]);
 
+  const editRecipeHandler = useCallback(
+    (id) => {
+      history.push(`/recipe/new?recipeId=${id}`);
+    },
+    [history]
+  );
+
+  const deleteRecipeHandler = useCallback((id) => {
+    console.log(id);
+  }, []);
+
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
       {isLoading && <Spinner />}
       {!isLoading && recipeDetail && (
         <div className="recipe-detail">
+          {auth.userId === recipeDetail.user && (
+            <div className="recipe-detail__controllers">
+              <Button ouline onClick={() => editRecipeHandler(recipeDetail.id)}>
+                Edit
+              </Button>
+              <Button
+                ouline
+                onClick={() => deleteRecipeHandler(recipeDetail.id)}
+              >
+                Delete
+              </Button>
+            </div>
+          )}
           <div className="recipe-detail__info">
             <div className="recipe-detail__info-title">
               <h1>{recipeDetail.title}</h1>
@@ -53,7 +81,6 @@ const RecipeDetail = (props) => {
                 <span>{recipeDetail.preparationTime} mins</span>
               </div>
               <div>
-                {" "}
                 <strong>Cook: </strong>
                 <span>{recipeDetail.cookingTime} mins</span>
               </div>
