@@ -211,7 +211,9 @@ const NewRecipe = (props) => {
         formData.append("steps", JSON.stringify(steps));
         formData.append("userId", auth.userId);
 
-        const response = await sendRequest("/recipes", "POST", formData);
+        const response = await sendRequest("/recipes", "POST", formData, {
+          Authorization: `Bearer ${auth.token}`,
+        });
         if (response.data) {
           history.push(`/${auth.userId}/recipes`);
         }
@@ -230,7 +232,10 @@ const NewRecipe = (props) => {
         const response = await sendRequest(
           `/recipes/${recipeId}`,
           "PATCH",
-          formUpdate
+          formUpdate,
+          {
+            Authorization: `Bearer ${auth.token}`,
+          }
         );
 
         if (response.data) {

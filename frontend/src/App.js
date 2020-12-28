@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -18,14 +18,42 @@ import "./App.css";
 
 const App = (props) => {
   const [userId, setUserId] = useState(null);
+  const [token, setToken] = useState(null);
 
-  const login = (userId) => {
+  const login = useCallback((userId, token, expiration) => {
     setUserId(userId);
-  };
+    setToken(token);
 
-  const logout = () => {
+    const tokenExpirationDate =
+      expiration || new Date(new Date().getTime() + 1000 * 60 * 60);
+
+    localStorage.setItem(
+      "userData",
+      JSON.stringify({
+        userId: userId,
+        token: token,
+        expiration: tokenExpirationDate.toISOString(),
+      })
+    );
+  }, []);
+
+  const logout = useCallback(() => {
     setUserId(null);
-  };
+    setToken(null);
+    localStorage.removeItem("userData");
+  }, []);
+
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("userData"));
+
+    if (
+      userData &&
+      userData.token &&
+      new Date(userData.expiration) > new Date()
+    ) {
+      login(userData.userId, userData.token, new Date(userData.expiration));
+    }
+  }, [login]);
 
   let routes;
   if (userId) {
@@ -69,8 +97,9 @@ const App = (props) => {
   return (
     <AuthContext.Provider
       value={{
-        isLogin: !!userId,
+        isLogin: !!token,
         userId: userId,
+        token: token,
         login: login,
         logout: logout,
       }}

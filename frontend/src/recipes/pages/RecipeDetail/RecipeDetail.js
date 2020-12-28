@@ -43,9 +43,20 @@ const RecipeDetail = (props) => {
     setIsDelete(false);
 
     try {
-      await sendRequest(`/recipes/${recipeId}`, "DELETE");
+      const response = await sendRequest(
+        `/recipes/${recipeId}`,
+        "DELETE",
+        null,
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+
+      if (response.data.status === 200) {
+        history.push(`/${auth.userId}/recipes`);
+      }
     } catch (error) {}
-  }, [recipeId, sendRequest]);
+  }, [recipeId, sendRequest, auth.token, auth.userId, history]);
 
   const showDeleteModalHandler = () => {
     setIsDelete(true);

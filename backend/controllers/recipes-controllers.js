@@ -157,6 +157,10 @@ const updateRecipe = async (req, res, next) => {
     );
   }
 
+  if (updatedRecipe.user.toString() !== req.userData.userId) {
+    return next(new HttpError("You are not allowed edit this recipe.", 401));
+  }
+
   updatedRecipe.title = title;
   updatedRecipe.description = description;
   updatedRecipe.preparationTime = preparationTime;
@@ -185,12 +189,16 @@ const deleteRecipe = async (req, res, next) => {
     deletedRecipe = await Recipe.findById(recipeId).populate("user");
   } catch (error) {
     return next(
-      new HttpError("[1] Delete recipe failed. Something went wrong.", 500)
+      new HttpError("Delete recipe failed. Something went wrong.", 500)
     );
   }
 
   if (!deletedRecipe) {
     return next(new HttpError("Could not find recipe.", 404));
+  }
+
+  if (deletedRecipe.user.id.toString() !== req.userData.userId) {
+    return next(new HttpError("You are not allowed delete this recipe.", 401));
   }
 
   const imagePath = deletedRecipe.image;
@@ -204,13 +212,13 @@ const deleteRecipe = async (req, res, next) => {
     await session.commitTransaction();
   } catch (error) {
     return next(
-      new HttpError("[2] Delete recipe failed. Something went wrong.", 500)
+      new HttpError("Delete recipe failed. Something went wrong.", 500)
     );
   }
 
   fs.unlink(imagePath, (error) => {});
 
-  return res.json({ message: "Delete recipe success." });
+  return res.json({ status: 200, message: "Delete recipe success." });
 };
 
 exports.getAllRecipes = getAllRecipes;

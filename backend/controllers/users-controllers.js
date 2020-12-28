@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const HttpError = require("../models/http-error");
 const User = require("../models/user");
@@ -43,7 +44,20 @@ const login = async (req, res, next) => {
     return next(new HttpError("Login failed. Wrong password.", 401));
   }
 
-  return res.json({ userId: existedUser.id });
+  let token;
+  try {
+    token = jwt.sign(
+      {
+        userId: existedUser.id,
+      },
+      "super_secret_key",
+      { expiresIn: "1h" }
+    );
+  } catch (error) {
+    return next(new HttpError("Login failed. Please try again.", 500));
+  }
+
+  return res.json({ userId: existedUser.id, token: token });
 };
 
 const register = async (req, res, next) => {
@@ -79,7 +93,20 @@ const register = async (req, res, next) => {
     return next(new HttpError("Register failed. Something went wrong.", 500));
   }
 
-  return res.json({ user: newUser.toObject({ getters: true }) });
+  let token;
+  try {
+    token = jwt.sign(
+      {
+        userId: newUser.id,
+      },
+      "super_secret_key",
+      { expiresIn: "1h" }
+    );
+  } catch (error) {
+    return next(new HttpError("Register failed. Please try again.", 500));
+  }
+
+  return res.json({ userId: newUser.id, token: token });
 };
 
 exports.getUserByUserId = getUserByUserId;
