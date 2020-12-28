@@ -178,12 +178,44 @@ const updateRecipe = async (req, res, next) => {
 };
 
 const deleteRecipe = async (req, res, next) => {
-  return res.status(200).json({ message: "deleteRecipe" });
+  const recipeId = req.params.recipeId;
+
+  let deletedRecipe;
+  try {
+    deletedRecipe = await Recipe.findById(recipeId).populate("user");
+  } catch (error) {
+    return next(
+      new HttpError("[1] Delete recipe failed. Something went wrong.", 500)
+    );
+  }
+
+  if (!deletedRecipe) {
+    return next(new HttpError("Could not find recipe.", 404));
+  }
+
+  const imagePath = deletedRecipe.image;
+
+  try {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    await deletedRecipe.remove({ session: session });
+    deletedRecipe.user.recipes.pull(deletedRecipe);
+    await deletedRecipe.user.save({ session: session });
+    await session.commitTransaction();
+  } catch (error) {
+    return next(
+      new HttpError("[2] Delete recipe failed. Something went wrong.", 500)
+    );
+  }
+
+  fs.unlink(imagePath, (error) => {});
+
+  return res.json({ message: "Delete recipe success." });
 };
 
 exports.getAllRecipes = getAllRecipes;
+exports.getRecipeById = getRecipeById;
 exports.getRecipesByUserId = getRecipesByUserId;
 exports.createRecipe = createRecipe;
 exports.updateRecipe = updateRecipe;
 exports.deleteRecipe = deleteRecipe;
-exports.getRecipeById = getRecipeById;

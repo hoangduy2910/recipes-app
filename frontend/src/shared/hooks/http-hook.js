@@ -16,6 +16,10 @@ export const useHttpClient = () => {
           response = await axios.get(url);
         } else if (method === "POST") {
           response = await axios.post(url, body, { headers: headers });
+        } else if (method === "PATCH") {
+          response = await axios.patch(url, body, { headers: headers });
+        } else if (method === "DELETE") {
+          response = await axios.delete(url, { headers: headers });
         }
         setIsLoading(false);
         return response;

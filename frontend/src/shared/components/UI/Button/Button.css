@@ -47,15 +47,19 @@
 .btn--fill {
   color: white;
   background-color: #c85621;
-  border-radius: .2rem;
+  border-radius: 0.2rem;
+}
+
+.btn--fill:hover {
+  cursor: pointer;
 }
 
 .btn--fill-small {
   color: white;
   background-color: #c85621;
-  padding: .3rem;
+  padding: 0.3rem;
   font-size: 1rem;
-  border-radius: .3rem;
+  border-radius: 0.3rem;
 }
 
 .btn--disabled {

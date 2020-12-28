@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext, useCallback } from "react";
 import { useParams, useHistory } from "react-router-dom";
 
 import Spinner from "../../../shared/components/UI/Spinner/Spinner";
+import Modal from "../../../shared/components/UI/Modal/Modal";
 import ErrorModal from "../../../shared/components/UI/ErrorModal/ErrorModal";
 import Button from "../../../shared/components/UI/Button/Button";
 import { useHttpClient } from "../../../shared/hooks/http-hook";
@@ -12,8 +13,10 @@ const RecipeDetail = (props) => {
   const auth = useContext(AuthContext);
   const recipeId = useParams().recipeId;
   const history = useHistory();
+
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [recipeDetail, setRecipeDetail] = useState();
+  const [isDelete, setIsDelete] = useState(false);
 
   useEffect(() => {
     try {
@@ -36,13 +39,44 @@ const RecipeDetail = (props) => {
     [history]
   );
 
-  const deleteRecipeHandler = useCallback((id) => {
-    console.log(id);
-  }, []);
+  const deleteRecipeHandler = useCallback(async () => {
+    setIsDelete(false);
+
+    try {
+      await sendRequest(`/recipes/${recipeId}`, "DELETE");
+    } catch (error) {}
+  }, [recipeId, sendRequest]);
+
+  const showDeleteModalHandler = () => {
+    setIsDelete(true);
+  };
+
+  const cancelDeleteModalHandler = () => {
+    setIsDelete(false);
+  };
 
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
+      {isDelete && (
+        <Modal
+          show={isDelete}
+          onCancel={cancelDeleteModalHandler}
+          header="Delete Recipe"
+          footer={
+            <React.Fragment>
+              <Button type="button" fill onClick={cancelDeleteModalHandler}>
+                Cancel
+              </Button>
+              <Button type="button" fill onClick={deleteRecipeHandler}>
+                Delete
+              </Button>
+            </React.Fragment>
+          }
+        >
+          Do you want to delete this recipe ?
+        </Modal>
+      )}
       {isLoading && <Spinner />}
       {!isLoading && recipeDetail && (
         <div className="recipe-detail">
@@ -51,10 +85,7 @@ const RecipeDetail = (props) => {
               <Button ouline onClick={() => editRecipeHandler(recipeDetail.id)}>
                 Edit
               </Button>
-              <Button
-                ouline
-                onClick={() => deleteRecipeHandler(recipeDetail.id)}
-              >
+              <Button ouline onClick={() => showDeleteModalHandler()}>
                 Delete
               </Button>
             </div>

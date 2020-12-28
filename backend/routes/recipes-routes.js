@@ -13,7 +13,7 @@ router.get("/user/:userId", recipesController.getRecipesByUserId);
 
 router.post("/", fileUpload.single("image"), recipesController.createRecipe);
 
-router.post("/:recipeId", recipesController.updateRecipe);
+router.patch("/:recipeId", recipesController.updateRecipe);
 
 router.delete("/:recipeId", recipesController.deleteRecipe);
 

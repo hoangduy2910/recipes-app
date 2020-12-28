@@ -229,7 +229,7 @@ const NewRecipe = (props) => {
 
         const response = await sendRequest(
           `/recipes/${recipeId}`,
-          "POST",
+          "PATCH",
           formUpdate
         );
 

@@ -29,6 +29,7 @@
 
 .recipe-detail__info-description p {
   font-size: 1.1rem;
+  line-height: 1.6;
 }
 
 .recipe-detail__info-image {
