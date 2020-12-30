@@ -41,7 +41,7 @@ const Register = (props) => {
 
       const response = await sendRequest("/users/register", "POST", formData);
 
-      if (response.data.user) {
+      if (response.data.userId) {
         history.push("/login");
       }
     } catch (error) {}

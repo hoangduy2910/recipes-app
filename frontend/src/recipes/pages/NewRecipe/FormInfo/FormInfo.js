@@ -73,4 +73,4 @@ const FormInfo = (props) => {
   return formInfo;
 };
 
-export default React.memo(FormInfo);
+export default FormInfo;

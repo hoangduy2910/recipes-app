@@ -172,8 +172,8 @@ const NewRecipe = (props) => {
   );
 
   const removeInputHandler = useCallback(
-    (id, typeForm) => {
-      inputRemoveHandler(id, typeForm);
+    (id, isValid, typeForm) => {
+      inputRemoveHandler(id, isValid, typeForm);
     },
     [inputRemoveHandler]
   );

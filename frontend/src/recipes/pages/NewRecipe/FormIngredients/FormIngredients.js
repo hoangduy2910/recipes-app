@@ -38,7 +38,7 @@ const FormIngredients = (props) => {
           typeForm="ingredients"
           onInput={props.inputChange}
           removeInput
-          removeElement={() => props.removeIngredient(itemId, "ingredients")}
+          removeElement={() => props.removeIngredient(itemId, props.data[itemId].isValid, "ingredients")}
         />
       );
     }

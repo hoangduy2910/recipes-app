@@ -29,7 +29,7 @@ const Button = (props) => {
   let button = (
     <button
       type={props.type}
-      className={`btn ${classes.join(" ")}`}
+      className={`btn ${classes.join(" ")} ${props.className}`}
       disabled={props.disabled}
       onClick={props.onClick}
     >

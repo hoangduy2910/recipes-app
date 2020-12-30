@@ -1,5 +1,6 @@
 .recipe-detail {
   margin-top: 5rem;
+  margin-bottom: 10rem;
 }
 
 .recipe-detail__controllers {
@@ -42,7 +43,7 @@
 }
 
 .recipe-detail__info-sub {
-  border: 0.2rem solid #ccc;
+  border: 0.15rem solid #ccc;
   border-radius: 1rem;
   font-size: 1.1rem;
   display: flex;
@@ -75,7 +76,7 @@
 .recipe-detail__ingredients h2,
 .recipe-detail__steps h2 {
   font-size: 1.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 2.5rem;
 }
 
 .recipe-detail__ingredients p {
@@ -103,11 +104,19 @@
   margin-right: 0.5rem;
 }
 
+.recipe-detail__btn {
+  margin-right: 1rem;
+}
+
 @media (min-width: 992px) {
   .recipe-detail__info-sub {
     max-width: 15rem;
     max-height: 15rem;
   }
+}
+
+.recipe-detail__cross {
+  margin-bottom: 2rem;
 }
 
 @media (max-width: 992px) {

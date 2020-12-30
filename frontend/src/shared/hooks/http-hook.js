@@ -23,6 +23,7 @@ export const useHttpClient = () => {
         }
         setIsLoading(false);
         return response;
+        
       } catch (error) {
         const message = error.response.data.message;
         setError(message);

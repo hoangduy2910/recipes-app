@@ -1,13 +1,16 @@
 import { useCallback, useReducer } from "react";
 
 const formReducer = (state, action) => {
+  let formIsValid;
+
   switch (action.type) {
     case "INPUT_CHANGE":
-      let formIsValid = true;
+      formIsValid = true;
       for (const inputId in state.inputs[action.typeForm]) {
         // if (!state.inputs[inputId]) {
         //   continue;
         // }
+
         if (inputId === action.inputId) {
           formIsValid = formIsValid && action.isValid;
         } else {
@@ -48,12 +51,18 @@ const formReducer = (state, action) => {
       const inputsElement = { ...state.inputs[action.typeForm] };
       delete inputsElement[action.inputId];
 
+      formIsValid = true;
+      for (const inputId in inputsElement) {
+        formIsValid = formIsValid && inputsElement[inputId].isValid;
+      }
+
       return {
         ...state,
         inputs: {
           ...state.inputs,
           [action.typeForm]: inputsElement,
         },
+        isValid: formIsValid,
       };
     case "SET_DATA":
       return {
@@ -89,10 +98,11 @@ export const useForm = (initialInput, initialFormValidity) => {
     });
   }, []);
 
-  const inputRemoveHandler = useCallback((id, typeForm) => {
+  const inputRemoveHandler = useCallback((id, isValid, typeForm) => {
     dispatch({
       type: "INPUT_REMOVE",
       inputId: id,
+      isValid: isValid,
       typeForm: typeForm,
     });
   }, []);
@@ -105,5 +115,11 @@ export const useForm = (initialInput, initialFormValidity) => {
     });
   }, []);
 
-  return [formState, inputChangeHandler, inputAddHandler, inputRemoveHandler, setFormData];
+  return [
+    formState,
+    inputChangeHandler,
+    inputAddHandler,
+    inputRemoveHandler,
+    setFormData,
+  ];
 };

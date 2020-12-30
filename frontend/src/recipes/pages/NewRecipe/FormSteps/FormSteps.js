@@ -36,7 +36,7 @@ const FormIngredients = (props) => {
           typeForm="steps"
           onInput={props.inputChange}
           removeInput
-          removeElement={() => props.removeStep(itemId, "steps")}
+          removeElement={() => props.removeStep(itemId, props.data[itemId].isValid, "steps")}
         />
       );
     }

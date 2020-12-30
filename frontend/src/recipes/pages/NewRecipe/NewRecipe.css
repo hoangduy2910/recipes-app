@@ -28,3 +28,9 @@
   justify-content: space-between;
   align-items: center;
 }
+
+@media (min-width: 1400px) {
+  .new-recipe-form {
+    width: 60%;
+  }
+}

@@ -76,10 +76,20 @@ const RecipeDetail = (props) => {
           header="Delete Recipe"
           footer={
             <React.Fragment>
-              <Button type="button" fill onClick={cancelDeleteModalHandler}>
+              <Button
+                type="button"
+                fill
+                onClick={cancelDeleteModalHandler}
+                className="recipe-detail__btn"
+              >
                 Cancel
               </Button>
-              <Button type="button" fill onClick={deleteRecipeHandler}>
+              <Button
+                type="button"
+                fill
+                onClick={deleteRecipeHandler}
+                className="recipe-detail__btn"
+              >
                 Delete
               </Button>
             </React.Fragment>
@@ -142,12 +152,14 @@ const RecipeDetail = (props) => {
               </div>
             </div>
           </div>
+          <hr className="recipe-detail__cross" />
           <div className="recipe-detail__ingredients">
             <h2>Ingredients</h2>
             {recipeDetail.ingredients.map((ing, idx) => (
               <p key={idx}>{ing}</p>
             ))}
           </div>
+          <hr className="recipe-detail__cross" />
           <div className="recipe-detail__steps">
             <h2>Steps</h2>
             {recipeDetail.steps.map((step, idx) => (

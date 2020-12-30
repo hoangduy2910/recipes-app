@@ -73,7 +73,7 @@ const createRecipe = async (req, res, next) => {
     await sharp(req.file.path)
       .resize(325, 240)
       .toFile(
-        `${req.file.destination}/325x240-${req.file.filename}`,
+        `${req.file.destination}/582x388-${req.file.filename}`,
         (error) => {
           if (error) {
             return next(
@@ -99,7 +99,7 @@ const createRecipe = async (req, res, next) => {
     preparationTime,
     cookingTime,
     servings,
-    image: `${req.file.destination}/325x240-${req.file.filename}`,
+    image: `${req.file.destination}/582x388-${req.file.filename}`,
     ingredients: ingsParse,
     steps: stepsParse,
     user: userId,
