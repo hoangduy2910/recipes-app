@@ -21,6 +21,7 @@ export const useHttpClient = () => {
         } else if (method === "DELETE") {
           response = await axios.delete(url, { headers: headers });
         }
+
         setIsLoading(false);
         return response;
         

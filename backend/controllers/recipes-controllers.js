@@ -1,4 +1,3 @@
-const { error } = require("console");
 const fs = require("fs");
 
 const mongoose = require("mongoose");
@@ -8,17 +7,8 @@ const HttpError = require("../models/http-error");
 const Recipe = require("../models/recipe");
 const User = require("../models/user");
 
-const getAllRecipes = async (req, res, next) => {
-  let recipes;
-  try {
-    recipes = await Recipe.find();
-  } catch (error) {
-    return next(new HttpError("Fetching recipes failed.", 500));
-  }
-
-  return res.status(200).json({
-    recipes: recipes.map((recipe) => recipe.toObject({ getters: true })),
-  });
+const getAllRecipes = (req, res, next) => {
+  return res.json({ recipes: res.paginatedResults });
 };
 
 const getRecipeById = async (req, res, next) => {
@@ -26,7 +16,7 @@ const getRecipeById = async (req, res, next) => {
 
   let recipe;
   try {
-    recipe = await Recipe.findById(recipeId);
+    recipe = await Recipe.findById(recipeId).populate("user", "username");
   } catch (error) {
     return next(new HttpError("Fetching recipe failed.", 500));
   }

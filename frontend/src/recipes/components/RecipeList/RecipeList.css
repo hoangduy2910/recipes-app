@@ -5,15 +5,3 @@
   align-items: center;
   flex-wrap: wrap;
 }
-
-.no-recipes {
-  background-color: #f9ece6;
-  border: 0.1rem solid #ccc;
-  border-radius: 1rem;
-  padding: 2rem;
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
-}
-
-.no-recipes h2 {
-  margin-bottom: 2rem;
-}

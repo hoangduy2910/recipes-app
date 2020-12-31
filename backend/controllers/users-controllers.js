@@ -22,8 +22,6 @@ const getUserByUserId = async (req, res, next) => {
 const login = async (req, res, next) => {
   const { email, password } = req.body;
 
-  console.log(email, password);
-
   let existedUser;
   try {
     existedUser = await User.findOne({ email: email });

@@ -18,7 +18,8 @@
 }
 
 .recipe-detail__info-title,
-.recipe-detail__info-description {
+.recipe-detail__info-description,
+.recipe-detail__info-user {
   margin-bottom: 2rem;
   grid-column: 1 / span 2;
 }
@@ -29,6 +30,11 @@
 }
 
 .recipe-detail__info-description p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.recipe-detail__info-user p {
   font-size: 1.1rem;
   line-height: 1.6;
 }

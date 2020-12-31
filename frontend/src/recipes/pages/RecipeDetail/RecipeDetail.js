@@ -118,6 +118,11 @@ const RecipeDetail = (props) => {
             <div className="recipe-detail__info-description">
               <p>{recipeDetail.description}</p>
             </div>
+            <div className="recipe-detail__info-user">
+              <p>
+                By <i>{recipeDetail.user.username}</i>
+              </p>
+            </div>
             <div className="recipe-detail__info-image">
               <img
                 src={`http://localhost:5000/${recipeDetail.image}`}
