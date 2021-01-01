@@ -13,6 +13,7 @@ import Recipes from "./recipes/pages/Recipes/Recipes";
 import UserRecipes from "./recipes/pages/UserRecipes/UserRecipes";
 import NewRecipe from "./recipes/pages/NewRecipe/NewRecipe";
 import RecipeDetail from "./recipes/pages/RecipeDetail/RecipeDetail";
+import Profile from "./users/pages/Profile/Profile";
 import { AuthContext } from "./shared/context/auth-context";
 import "./App.css";
 
@@ -71,6 +72,9 @@ const App = (props) => {
         <Route path="/recipe/:recipeId">
           <RecipeDetail />
         </Route>
+        <Route path="/profile/:userId">
+          <Profile />
+        </Route>
         <Redirect to="/" />
       </Switch>
     );
@@ -82,6 +86,9 @@ const App = (props) => {
         </Route>
         <Route path="/recipe/:recipeId">
           <RecipeDetail />
+        </Route>
+        <Route path="/:userId/recipes">
+          <UserRecipes />
         </Route>
         <Route path="/login">
           <Login />

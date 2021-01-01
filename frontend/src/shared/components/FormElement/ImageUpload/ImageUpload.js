@@ -15,6 +15,7 @@ const ImageUpload = (props) => {
 
     if (typeof props.initialValue === "string") {
       setPreviewUrl(`http://localhost:5000/${props.initialValue}`);
+      console.log("has value");
       return;
     }
 
@@ -51,13 +52,27 @@ const ImageUpload = (props) => {
         accept=".jpg,.jpeg,.png"
         onChange={pickedImageHandler}
       />
-      <div>
-        <Button type="button" fillSmall onClick={pickedFileHandler}>
-          Pick Image
-        </Button>
-        {previewUrl && <img src={previewUrl} alt="Preview" />}
-        {!previewUrl && <p>Please pick an image.</p>}
-      </div>
+      {!props.isAvatar && (
+        <div className="image-upload__recipe">
+          <Button type="button" fillSmall onClick={pickedFileHandler}>
+            Pick Image
+          </Button>
+          {previewUrl && <img src={previewUrl} alt="Preview" />}
+          {!previewUrl && <p>Please pick an image.</p>}
+        </div>
+      )}
+      {props.isAvatar && (
+        <div className="image-upload__avatar">
+          {previewUrl && (
+            <div>
+              <img src={previewUrl} alt="Preview" />
+              <Button type="button" fillSmall onClick={pickedFileHandler}>
+                Pick Image
+              </Button>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 

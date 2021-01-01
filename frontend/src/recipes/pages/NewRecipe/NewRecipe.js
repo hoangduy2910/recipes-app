@@ -21,13 +21,13 @@ const NewRecipe = (props) => {
   const [formCount, setFormCount] = useState(1);
   const [isCreated, setIsCreated] = useState(true);
 
-  const [
+  const {
     formState,
     inputChangeHandler,
     inputAddHandler,
     inputRemoveHandler,
     setFormData,
-  ] = useForm(
+  } = useForm(
     {
       info: {},
       ingredients: {},

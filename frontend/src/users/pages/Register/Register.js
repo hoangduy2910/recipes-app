@@ -18,7 +18,7 @@ import "./Register.css";
 const Register = (props) => {
   const history = useHistory();
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
-  const [formState, inputChangeHandler] = useForm(
+  const { formState, inputChangeHandler } = useForm(
     {
       register: {
         username: { value: "", isValid: false },

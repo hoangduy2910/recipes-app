@@ -14,7 +14,7 @@ import "./Login.css";
 const Login = (props) => {
   const auth = useContext(AuthContext);
   const history = useHistory();
-  const [formState, inputChangeHandler] = useForm(
+  const { formState, inputChangeHandler } = useForm(
     {
       login: {
         email: { value: "", isValid: false },

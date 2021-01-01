@@ -12,8 +12,53 @@
   margin-bottom: 2rem;
 }
 
+.user-recipes__info {
+  width: 100%;
+  padding: 1rem;
+  background-color: #f9ece6;
+
+  display: flex;
+  align-items: center;
+}
+
+.user-recipes__info-image {
+  flex-basis: 20%;
+  /* background-color: #c85621; */
+}
+
+.user-recipes__info-image img {
+  width: 60%;
+  margin: 1rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-recipes__edit {
+  color: #c85621;
+  text-decoration: underline;
+}
+
+.user-recipes__info-overall h2,
+.user-recipes__info-overall p  {
+  margin-bottom: .5rem;
+}
+
+.user-recipes__edit:hover {
+  cursor: pointer;
+}
+
+.user-recipe__btn-cancel {
+  margin-right: 1rem;
+}
+
 @media (min-width: 1400px) {
   .no-recipes {
     width: 50%;
+  }
+}
+
+@media (max-width: 576px) {
+  .user-recipes__info-image {
+    flex-basis: 40%;
   }
 }

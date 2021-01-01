@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useCallback } from "react";
-import { useParams, useHistory } from "react-router-dom";
+import { Link, useParams, useHistory } from "react-router-dom";
 
 import Spinner from "../../../shared/components/UI/Spinner/Spinner";
 import Modal from "../../../shared/components/UI/Modal/Modal";
@@ -101,7 +101,7 @@ const RecipeDetail = (props) => {
       {isLoading && <Spinner />}
       {!isLoading && recipeDetail && (
         <div className="recipe-detail">
-          {auth.userId === recipeDetail.user && (
+          {auth.userId === recipeDetail.user.id && (
             <div className="recipe-detail__controllers">
               <Button ouline onClick={() => editRecipeHandler(recipeDetail.id)}>
                 Edit
@@ -119,9 +119,13 @@ const RecipeDetail = (props) => {
               <p>{recipeDetail.description}</p>
             </div>
             <div className="recipe-detail__info-user">
-              <p>
-                By <i>{recipeDetail.user.username}</i>
-              </p>
+              <img
+                src={`http://localhost:5000/${recipeDetail.user.image}`}
+                alt={recipeDetail.user.username}
+              />
+              <span>
+                By <Link to={`/${recipeDetail.user._id}/recipes`}>{recipeDetail.user.username}</Link>
+              </span>
             </div>
             <div className="recipe-detail__info-image">
               <img

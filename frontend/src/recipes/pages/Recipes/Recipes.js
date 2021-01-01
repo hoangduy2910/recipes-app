@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 
+import Spinner from "../../../shared/components/UI/Spinner/Spinner";
 import SpinnerDot from "../../../shared/components/UI/SpinnerDot/SpinnerDot";
 import ErrorModal from "../../../shared/components/UI/ErrorModal/ErrorModal";
 import RecipeList from "../../components/RecipeList/RecipeList";
@@ -48,7 +49,7 @@ const Recipes = (props) => {
 
         setRecipes((prevRecipes) => {
           if (prevRecipes) {
-            setRecipes([...prevRecipes, ...response.data.recipes.results]);
+            return [...prevRecipes, ...response.data.recipes.results];
           }
           return response.data.recipes.results;
         });
@@ -57,16 +58,14 @@ const Recipes = (props) => {
     };
 
     getRecipesByUserId();
-
   }, [sendRequest, page]);
 
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
-
+      {isLoading && recipes.length === 0 && <Spinner />}
       <RecipeList recipes={recipes} lastRecipe={lastRecipeRef} />
-
-      {isLoading && <SpinnerDot />}
+      {isLoading && recipes.length !== 0 && <SpinnerDot />}
     </React.Fragment>
   );
 };

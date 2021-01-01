@@ -1,12 +1,36 @@
 .image-upload {
   width: 100%;
-  margin-bottom: 2rem;
 }
 
 .image-upload button {
   margin-bottom: 1rem;
 }
 
-.image-upload img {
+.image-upload button:hover {
+  cursor: pointer;
+}
+
+.image-upload__recipe img {
   width: 100%;
+}
+
+.image-upload__avatar div {
+  display: flex;
+  flex-direction: column;
+  justify-self: center;
+  align-items: center;
+}
+
+.image-upload__avatar img {
+  width: 30%;
+  min-width: 7rem;
+  border-radius: 50%;
+  border: .05rem solid #eee;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+  .image-upload__avatar img {
+    width: 50%;
+  }
 }

@@ -85,6 +85,7 @@ const register = async (req, res, next) => {
     username,
     email,
     password: hashedPassword,
+    image: "uploads/images/user-default.png",
     recipes: [],
   });
   try {

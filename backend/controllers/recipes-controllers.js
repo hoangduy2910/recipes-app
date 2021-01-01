@@ -7,8 +7,22 @@ const HttpError = require("../models/http-error");
 const Recipe = require("../models/recipe");
 const User = require("../models/user");
 
-const getAllRecipes = (req, res, next) => {
-  return res.json({ recipes: res.paginatedResults });
+const pagination = require("../utils/pagination");
+
+const getAllRecipes = async (req, res, next) => {
+  const page = parseInt(req.query.page);
+  const limit = parseInt(req.query.limit);
+
+  let recipes;
+  try {
+    recipes = await Recipe.find();
+  } catch (error) {
+    return next(new HttpError("Fetching recipe failed.", 500));
+  }
+
+  let paginatedRecipes = pagination(recipes, page, limit);
+
+  return res.json({ recipes: paginatedRecipes });
 };
 
 const getRecipeById = async (req, res, next) => {
@@ -16,7 +30,7 @@ const getRecipeById = async (req, res, next) => {
 
   let recipe;
   try {
-    recipe = await Recipe.findById(recipeId).populate("user", "username");
+    recipe = await Recipe.findById(recipeId).populate("user", "username image");
   } catch (error) {
     return next(new HttpError("Fetching recipe failed.", 500));
   }
@@ -26,10 +40,12 @@ const getRecipeById = async (req, res, next) => {
 
 const getRecipesByUserId = async (req, res, next) => {
   const userId = req.params.userId;
+  const page = parseInt(req.query.page);
+  const limit = parseInt(req.query.limit);
 
   let recipes;
   try {
-    recipes = await Recipe.find({ user: userId });
+    recipes = await Recipe.find({ user: userId }, "-ingredients -steps");
   } catch (error) {
     return next(
       new HttpError("Fetching recipes failed. Something went wrong !", 500)
@@ -42,8 +58,27 @@ const getRecipesByUserId = async (req, res, next) => {
     );
   }
 
+  let paginatedRecipes;
+  try {
+    paginatedRecipes = pagination(recipes, page, limit);
+  } catch (error) {
+    return next(
+      new HttpError("Fetching recipes failed. Something went wrong !", 500)
+    );
+  }
+
+  let user;
+  try {
+    user = await User.findById(userId, "-password -recipes");
+  } catch (error) {
+    return next(
+      new HttpError("Fetching recipes failed. Something went wrong !", 500)
+    );
+  }
+
   return res.json({
-    recipes: recipes.map((recipe) => recipe.toObject({ getters: true })),
+    recipes: paginatedRecipes,
+    user: user,
   });
 };
 

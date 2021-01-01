@@ -1,15 +1,12 @@
 const express = require("express");
 
-const Recipe = require("../models/recipe");
-
 const recipesController = require("../controllers/recipes-controllers");
 const fileUpload = require("../middlewares/file-upload");
 const checkAuth = require("../middlewares/check-auth");
-const pagination = require("../middlewares/pagination");
 
 const router = express.Router();
 
-router.get("/", pagination(Recipe), recipesController.getAllRecipes);
+router.get("/", recipesController.getAllRecipes);
 
 router.get("/:recipeId", recipesController.getRecipeById);
 
