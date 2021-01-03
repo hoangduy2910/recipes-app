@@ -10,8 +10,10 @@ const LIMIT = 8;
 
 const Recipes = (props) => {
   const [recipes, setRecipes] = useState([]);
+
   const [page, setPage] = useState(1);
   const [hasMorePage, setHasMorePage] = useState(false);
+
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
   const observer = useRef();

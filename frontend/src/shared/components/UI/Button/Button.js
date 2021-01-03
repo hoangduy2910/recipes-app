@@ -6,17 +6,13 @@ import "./Button.css";
 const Button = (props) => {
   let classes = [];
 
-  if (props.ouline) {
-    classes.push("btn--ouline");
+  if (props.outline) {
+    classes.push("btn--outline");
   } else if (props.fill) {
     classes.push("btn--fill");
   } else if (props.fillSmall) {
     classes.push("btn--fill-small");
-  } else if (props.oulineGreen) {
-    classes.push("btn--ouline-green");
-  } else if (props.oulineRed) {
-    classes.push("btn--ouline-red");
-  }
+  } 
 
   if (props.disabled) {
     classes.push("btn--disabled");

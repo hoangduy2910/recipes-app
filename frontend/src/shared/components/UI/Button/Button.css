@@ -8,7 +8,7 @@
   outline: none;
 }
 
-.btn--ouline {
+.btn--outline {
   position: relative;
   border: 1px solid #c85621;
   border-radius: 0.5rem;
@@ -18,7 +18,7 @@
   z-index: 1;
 }
 
-.btn--ouline::before {
+.btn--outline::before {
   content: "";
   position: absolute;
   top: 0;
@@ -35,11 +35,11 @@
   transition: transform 0.3s ease-in-out;
 }
 
-.btn--ouline:hover::before {
+.btn--outline:hover::before {
   transform: scaleX(1);
 }
 
-.btn--ouline:hover {
+.btn--outline:hover {
   color: white;
   cursor: pointer;
 }

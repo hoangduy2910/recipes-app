@@ -2,9 +2,11 @@ import React, { useState, useEffect, useContext, useCallback } from "react";
 import { Link, useParams, useHistory } from "react-router-dom";
 
 import Spinner from "../../../shared/components/UI/Spinner/Spinner";
-import Modal from "../../../shared/components/UI/Modal/Modal";
+import ModalRecipe from "./ModalRecipe/ModalRecipe";
 import ErrorModal from "../../../shared/components/UI/ErrorModal/ErrorModal";
 import Button from "../../../shared/components/UI/Button/Button";
+import ReviewList from "../../../users/components/ReviewList/ReviewList";
+import StarRating from "../../../shared/components/UI/StarRating/StarRating";
 import { useHttpClient } from "../../../shared/hooks/http-hook";
 import { AuthContext } from "../../../shared/context/auth-context";
 import "./RecipeDetail.css";
@@ -16,7 +18,10 @@ const RecipeDetail = (props) => {
 
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [recipeDetail, setRecipeDetail] = useState();
+  const [rating, setRating] = useState(0);
+
   const [isDelete, setIsDelete] = useState(false);
+  const [isReview, setIsReview] = useState(false);
 
   useEffect(() => {
     try {
@@ -58,55 +63,58 @@ const RecipeDetail = (props) => {
     } catch (error) {}
   }, [recipeId, sendRequest, auth.token, auth.userId, history]);
 
-  const showDeleteModalHandler = () => {
+  const showDeleteRecipeModalHandler = useCallback(() => {
     setIsDelete(true);
-  };
+  }, []);
 
-  const cancelDeleteModalHandler = () => {
+  const cancelDeleteRecipeModalHandler = useCallback(() => {
     setIsDelete(false);
-  };
+  }, []);
+
+  const showReviewModalHandler = useCallback(() => {
+    setIsReview(true);
+  }, []);
+
+  const cancelReviewModalHandler = useCallback(() => {
+    setIsReview(false);
+  }, []);
+
+  const addRatingAndReviewHandler = useCallback(() => {
+    console.log("Submit !!!");
+  }, []);
+
+  const setRatingStar = useCallback((ratingStar) => {
+    setRating(ratingStar);
+  }, []);
 
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
       {isDelete && (
-        <Modal
-          show={isDelete}
-          onCancel={cancelDeleteModalHandler}
-          header="Delete Recipe"
-          footer={
-            <React.Fragment>
-              <Button
-                type="button"
-                fill
-                onClick={cancelDeleteModalHandler}
-                className="recipe-detail__btn"
-              >
-                Cancel
-              </Button>
-              <Button
-                type="button"
-                fill
-                onClick={deleteRecipeHandler}
-                className="recipe-detail__btn"
-              >
-                Delete
-              </Button>
-            </React.Fragment>
-          }
+        <ModalRecipe
+          isShow={isDelete}
+          header="Delete"
+          onCancel={cancelDeleteRecipeModalHandler}
+          submitText="Delete"
+          onSubmit={deleteRecipeHandler}
+          className="recipe-detail__modal"
+          btnClass="recipe-detail__btn"
         >
-          Do you want to delete this recipe ?
-        </Modal>
+          Do you want to delete recipe ?
+        </ModalRecipe>
       )}
       {isLoading && <Spinner />}
       {!isLoading && recipeDetail && (
         <div className="recipe-detail">
           {auth.userId === recipeDetail.user.id && (
             <div className="recipe-detail__controllers">
-              <Button ouline onClick={() => editRecipeHandler(recipeDetail.id)}>
+              <Button
+                outline
+                onClick={() => editRecipeHandler(recipeDetail.id)}
+              >
                 Edit
               </Button>
-              <Button ouline onClick={() => showDeleteModalHandler()}>
+              <Button outline onClick={() => showDeleteRecipeModalHandler()}>
                 Delete
               </Button>
             </div>
@@ -124,7 +132,10 @@ const RecipeDetail = (props) => {
                 alt={recipeDetail.user.username}
               />
               <span>
-                By <Link to={`/${recipeDetail.user._id}/recipes`}>{recipeDetail.user.username}</Link>
+                By{" "}
+                <Link to={`/${recipeDetail.user._id}/recipes`}>
+                  {recipeDetail.user.username}
+                </Link>
               </span>
             </div>
             <div className="recipe-detail__info-image">
@@ -180,6 +191,42 @@ const RecipeDetail = (props) => {
                 <p>{step}</p>
               </div>
             ))}
+          </div>
+          <hr className="recipe-detail__cross" />
+          <div className="recipe-detail__reviews">
+            <div className="recipe-detail__reviews-header">
+              <h2>Reviews</h2>
+              <Button type="button" outline onClick={showReviewModalHandler}>
+                Add Rating & Review
+              </Button>
+              {isReview && (
+                <ModalRecipe
+                  isShow={isReview}
+                  header="Rating & Review"
+                  onCancel={cancelReviewModalHandler}
+                  submitText="Submit"
+                  onSubmit={addRatingAndReviewHandler}
+                  className="recipe-detail__modal"
+                  btnClass="recipe-detail__btn"
+                >
+                  <h2>{recipeDetail.title}</h2>
+                  <StarRating
+                    className="fa-2x recipe-detail__star"
+                    isShow={false}
+                    initialRating={rating}
+                    onClick={setRatingStar}
+                  />
+                  <textarea
+                    className="recipe-detail__review-form"
+                    rows="5"
+                    placeholder="What did you think about this recipe ?"
+                  ></textarea>
+                </ModalRecipe>
+              )}
+            </div>
+            <div className="recipe-detail__reviews-body">
+              <ReviewList />
+            </div>
           </div>
         </div>
       )}
