@@ -23,7 +23,6 @@
 
 .image-upload__avatar img {
   width: 30%;
-  min-width: 7rem;
   border-radius: 50%;
   border: .05rem solid #eee;
   margin-bottom: 1rem;
@@ -32,5 +31,12 @@
 @media (min-width: 768px) {
   .image-upload__avatar img {
     width: 50%;
+  }
+}
+
+@media (max-width: 1024px) {
+  .image-upload__avatar img {
+    width: 30%;
+    min-width: 10rem;
   }
 }

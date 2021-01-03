@@ -1,8 +1,12 @@
+const fs = require("fs");
+
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
 
 const HttpError = require("../models/http-error");
 const User = require("../models/user");
+const { error } = require("console");
 
 const getUserByUserId = async (req, res, next) => {
   const userId = req.params.userId;
@@ -17,6 +21,42 @@ const getUserByUserId = async (req, res, next) => {
   }
 
   return res.json({ user: user.toObject({ getters: true }) });
+};
+
+const updateUser = async (req, res, next) => {
+  const userId = req.params.userId;
+  const { username, firstName, lastName } = req.body;
+
+  let updatedUser;
+  try {
+    updatedUser = await User.findById(userId);
+  } catch (error) {
+    return next(new HttpError("Something went wrong.", 500));
+  }
+
+  if (!updatedUser) {
+    return next(new HttpError("Can not find user", 404));
+  }
+
+  if (updatedUser.id !== userId) {
+    return next(new HttpError("You are not allowed edit this user.", 401));
+  }
+
+  if (req.file) {
+    fs.unlink(updatedUser.image, (error) => {});
+    updatedUser.image = `uploads/images/${req.file.filename}`;
+  }
+  updatedUser.username = username;
+  updatedUser.firstName = firstName;
+  updatedUser.lastName = lastName;
+
+  try {
+    await updatedUser.save();
+  } catch (error) {
+    return next(new HttpError("Something went wrong.", 500));
+  }
+
+  return res.json({ user: updatedUser.toObject({ getters: true }) });
 };
 
 const login = async (req, res, next) => {
@@ -85,6 +125,8 @@ const register = async (req, res, next) => {
     username,
     email,
     password: hashedPassword,
+    firstName: "",
+    lastName: "",
     image: "uploads/images/user-default.png",
     recipes: [],
   });
@@ -111,5 +153,6 @@ const register = async (req, res, next) => {
 };
 
 exports.getUserByUserId = getUserByUserId;
+exports.updateUser = updateUser;
 exports.login = login;
 exports.register = register;

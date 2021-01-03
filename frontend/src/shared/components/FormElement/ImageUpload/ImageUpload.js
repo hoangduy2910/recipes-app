@@ -15,7 +15,6 @@ const ImageUpload = (props) => {
 
     if (typeof props.initialValue === "string") {
       setPreviewUrl(`http://localhost:5000/${props.initialValue}`);
-      console.log("has value");
       return;
     }
 
