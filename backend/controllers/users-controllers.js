@@ -2,11 +2,9 @@ const fs = require("fs");
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const mongoose = require("mongoose");
 
 const HttpError = require("../models/http-error");
 const User = require("../models/user");
-const { error } = require("console");
 
 const getUserByUserId = async (req, res, next) => {
   const userId = req.params.userId;

@@ -10,6 +10,7 @@ const recipeSchema = new mongoose.Schema({
   ingredients: [{ type: String, required: true }],
   steps: [{ type: String, required: true }],
   user: { type: mongoose.Types.ObjectId, required: true, ref: "User" },
+  reviews: [{ type: String, required: true, ref: "Review" }]
 });
 
 module.exports = mongoose.model("Recipe", recipeSchema);

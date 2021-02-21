@@ -7,6 +7,7 @@ import ErrorModal from "../../../shared/components/UI/ErrorModal/ErrorModal";
 import Button from "../../../shared/components/UI/Button/Button";
 import ReviewList from "../../../users/components/ReviewList/ReviewList";
 import StarRating from "../../../shared/components/UI/StarRating/StarRating";
+import { useForm } from "../../../shared/hooks/form-hook";
 import { useHttpClient } from "../../../shared/hooks/http-hook";
 import { AuthContext } from "../../../shared/context/auth-context";
 import "./RecipeDetail.css";
@@ -22,6 +23,22 @@ const RecipeDetail = (props) => {
 
   const [isDelete, setIsDelete] = useState(false);
   const [isReview, setIsReview] = useState(false);
+
+  const { formState, inputChangeHandler } = useForm(
+    {
+      review: {
+        rating: {
+          value: "",
+          isValid: false,
+        },
+        content: {
+          value: "",
+          isValid: false,
+        },
+      },
+    },
+    false
+  );
 
   useEffect(() => {
     try {
@@ -72,8 +89,12 @@ const RecipeDetail = (props) => {
   }, []);
 
   const showReviewModalHandler = useCallback(() => {
-    setIsReview(true);
-  }, []);
+    if (auth.token) {
+      setIsReview(true);
+    } else {
+      history.push("/login");
+    }
+  }, [auth.token, history]);
 
   const cancelReviewModalHandler = useCallback(() => {
     setIsReview(false);

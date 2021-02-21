@@ -127,6 +127,7 @@ const createRecipe = async (req, res, next) => {
     image: `${req.file.destination}/582x388-${req.file.filename}`,
     ingredients: ingsParse,
     steps: stepsParse,
+    reviews: [],
     user: userId,
   });
 
